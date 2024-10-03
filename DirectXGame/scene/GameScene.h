@@ -39,10 +39,16 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	bool IsFinished() const { return finished_; }
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+
+	//終了フラグ
+	bool finished_ = false;
+	
 
 	/// <summary>
 	/// ゲームシーン用

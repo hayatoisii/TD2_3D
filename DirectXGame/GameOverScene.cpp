@@ -1,25 +1,25 @@
-#include "GameScene.h"
+#include "GameOverScene.h"
 #include "TextureManager.h"
 #include <cassert>
 
-GameScene::GameScene() {}
+GameOverScene::GameOverScene() {}
 
-GameScene::~GameScene() {}
+GameOverScene::~GameOverScene() {}
 
-void GameScene::Initialize() {
+void GameOverScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 }
 
-void GameScene::Update() {
-	if (Input::GetInstance()->PushKey(DIK_2)) {
+void GameOverScene::Update() {
+	if (Input::GetInstance()->PushKey(DIK_3)) {
 		finished_ = true;
 	}
 }
 
-void GameScene::Draw() {
+void GameOverScene::Draw() {
 
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();

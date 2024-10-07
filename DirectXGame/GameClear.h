@@ -11,18 +11,18 @@
 /// <summary>
 /// ゲームシーン
 /// </summary>
-class GameScene2 {
+class GameClearScene {
 
 public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
-	GameScene2();
+	GameClearScene();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~GameScene2();
+	~GameClearScene();
 
 	/// <summary>
 	/// 初期化
@@ -48,7 +48,6 @@ private: // メンバ変数
 
 	// 終了フラグ
 	bool finished_ = false;
-	
 
 	/// <summary>
 	/// ゲームシーン用

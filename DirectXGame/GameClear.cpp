@@ -1,21 +1,25 @@
-#include "GameScene2.h"
+#include "GameClear.h"
 #include "TextureManager.h"
 #include <cassert>
 
-GameScene2::GameScene2() {}
+GameClearScene::GameClearScene() {}
 
-GameScene2::~GameScene2() {}
+GameClearScene::~GameClearScene() {}
 
-void GameScene2::Initialize() {
+void GameClearScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 }
 
-void GameScene2::Update() {}
+void GameClearScene::Update() {
+	if (Input::GetInstance()->PushKey(DIK_4)) {
+		finished_ = true;
+	}
+}
 
-void GameScene2::Draw() {
+void GameClearScene::Draw() {
 
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();

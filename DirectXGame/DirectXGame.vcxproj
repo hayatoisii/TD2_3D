@@ -107,12 +107,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="2d\ImGuiManager.cpp" />
+    <ClCompile Include="3d\WorldTransform.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
+    <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MyMath.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
+    <ClCompile Include="SkyDome.cpp" />
     <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +143,7 @@
     <ClInclude Include="base\StringUtility.h" />
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
+    <ClInclude Include="CameraController.h" />
     <ClInclude Include="GameClear.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="input\Input.h" />
@@ -146,7 +151,9 @@
     <ClInclude Include="math\Vector2.h" />
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
+    <ClInclude Include="MyMath.h" />
     <ClInclude Include="scene\GameScene.h" />
+    <ClInclude Include="SkyDome.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>

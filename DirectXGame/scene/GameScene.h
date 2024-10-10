@@ -5,6 +5,8 @@
 #include "Input.h"
 #include "Model.h"
 #include "Sprite.h"
+#include "Skydome.h"
+#include "DebugCamera.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
@@ -45,9 +47,25 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+	// ワールドトランスフォーム
+	WorldTransform worldTransform_;
+	// ビュープロジェクション
+	ViewProjection viewProjection_;
+	// 天球
+	Skydome* skydome_ = nullptr;
+	// 3Dモデル
+	Model* modelSkydome_ = nullptr;
+	// デバッグカメラ
+	DebugCamera* debugCamera_ = nullptr;
+
+	Vector3 skydomeRotate;
+
+
 
 	//終了フラグ
 	bool finished_ = false;
+	// デバッグカメラ有効
+	bool isDebugCameraActive_ = false;
 	
 
 	/// <summary>

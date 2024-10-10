@@ -1,10 +1,8 @@
+#pragma once
 #include "Model.h"
 #include "Viewprojection.h"
 #include "WorldTransform.h"
-
-#include <numbers>
-
-class Skydome {
+class Bom {
 public:
 	void Initialize(Model* model, ViewProjection* viewProjection);
 
@@ -19,7 +17,5 @@ private:
 	// モデル
 	Model* model_ = nullptr;
 
-	// モデルの移動速度や位置を格納する変数
-	Vector3 velocity_; // 移動速度
 
 };

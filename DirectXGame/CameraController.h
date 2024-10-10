@@ -1,4 +1,4 @@
-
+#pragma once
 #include "Vector3.h"
 #include "Viewprojection.h"
 
@@ -60,4 +60,7 @@ private:
 
 	// 速度掛率
 	static inline const float kVelocityBias = 15.0f;
+
+	// 縦角度を45度下向きに設定 (X軸回転)
+	float angle = 45.0f * (3.14159265f / 180.0f); // ラジアンに変換
 };

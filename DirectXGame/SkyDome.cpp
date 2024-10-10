@@ -1,9 +1,9 @@
 #include "Skydome.h"
 
-void Skydome::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& skydomeRotate) {
+void Skydome::Initialize(Model* model, ViewProjection* viewProjection) {
 
 	worldTransform_.Initialize();
-	worldTransform_.rotation_.y = skydomeRotate.y;
+	
 	model_ = model;
 	viewProjection_ = viewProjection;
 

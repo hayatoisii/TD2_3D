@@ -6,6 +6,10 @@
 #include "Model.h"
 #include "Sprite.h"
 #include "Skydome.h"
+#include "Bom.h"
+#include "Ground.h"
+#include "Ground2.h"
+#include"CameraController.h"
 #include "DebugCamera.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
@@ -55,10 +59,24 @@ private: // メンバ変数
 	Skydome* skydome_ = nullptr;
 	// 3Dモデル
 	Model* modelSkydome_ = nullptr;
+	//爆弾
+	Bom* bom_ = nullptr;
+	//爆弾3Dモデル
+	Model* modelBom_ = nullptr;
+	//地面
+	Ground* ground_ = nullptr;
+	//地面モデル
+	Model* modelGround_ = nullptr;
+	// 地面2
+	Ground2* ground2_ = nullptr;
+	// 地面2モデル
+	Model* modelGround2_ = nullptr;
+	
+
 	// デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
-
-	Vector3 skydomeRotate;
+	//カメラ
+	CameraController* cameraController_ = nullptr;
 
 
 

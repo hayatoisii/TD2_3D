@@ -9,6 +9,7 @@ void TitleScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	titleTextureHandle_ = TextureManager::Load("title/title.png");
 	sprite_ = Sprite::Create(titleTextureHandle_, {0, 0});
+	
 }
 
 void TitleScene::Update() {

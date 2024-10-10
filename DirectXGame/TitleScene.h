@@ -2,6 +2,7 @@
 #include "Sprite.h"
 #include "Input.h"
 #include "DirectXCommon.h"
+#include "Audio.h"
 class TitleScene {
 
 public:
@@ -17,6 +18,8 @@ private:
 	// 終了フラグ
 	bool finished_ = false;
 	Input* input_ = nullptr;
+	Audio* audio_ = nullptr;
+
 	//スプライト
 	Sprite* sprite_ = nullptr;
 

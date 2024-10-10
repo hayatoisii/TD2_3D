@@ -71,8 +71,6 @@ private: // メンバ変数
 	Ground2* ground2_ = nullptr;
 	// 地面2モデル
 	Model* modelGround2_ = nullptr;
-	
-
 	// デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
 	//カメラ
@@ -84,6 +82,13 @@ private: // メンバ変数
 	bool finished_ = false;
 	// デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
+	// BGMが再生されているかを追跡
+	bool isBGMPlaying_ = false; 
+
+
+
+	//サウンドデータ
+	uint32_t BattleBGMHandle_ = 0;
 	
 
 	/// <summary>

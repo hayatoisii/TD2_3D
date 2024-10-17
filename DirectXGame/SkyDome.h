@@ -1,7 +1,6 @@
 #include "Model.h"
 #include "Viewprojection.h"
 #include "WorldTransform.h"
-
 #include <numbers>
 
 class Skydome {

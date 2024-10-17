@@ -2,9 +2,10 @@
 
 void Skydome::Initialize(Model* model, ViewProjection* viewProjection) {
 
-	worldTransform_.Initialize();
-	
+	assert(model);
 	model_ = model;
+
+	worldTransform_.Initialize();
 	viewProjection_ = viewProjection;
 
 	worldTransform_.rotation_.y = std::numbers::pi_v<float> / -2.0f;
@@ -12,7 +13,6 @@ void Skydome::Initialize(Model* model, ViewProjection* viewProjection) {
 
 void Skydome::Update() {
 
-	
 	// 行列を定数バッファに転送
 	worldTransform_.TransferMatrix();
 

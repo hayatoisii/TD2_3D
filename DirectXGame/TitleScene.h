@@ -1,11 +1,23 @@
 #pragma once
-#include "Sprite.h"
-#include "Input.h"
-#include "DirectXCommon.h"
+
 #include "Audio.h"
+#include "DirectXCommon.h"
+#include "Input.h"
+#include "SkyDome.h"
+#include "Sprite.h"
+#include "Model.h"
+#include "MyMath.h"
+#include "WorldTransform.h"
+#include <assert.h>
+#include "ViewProjection.h"
+
 class TitleScene {
 
 public:
+
+	TitleScene();
+	~TitleScene();
+
 	void Initialize();
 
 	void Update();
@@ -15,16 +27,28 @@ public:
 	bool IsFinished() const { return finished_; }
 
 private:
-	// 終了フラグ
-	bool finished_ = false;
+	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 
-	//スプライト
-	Sprite* sprite_ = nullptr;
-
-	DirectXCommon* dxCommon_ = nullptr;
+	// ワールド変換データ
+	WorldTransform worldTransform_;
+	ViewProjection viewProjection_;
 
 	uint32_t titleTextureHandle_ = 0;
-	
+
+	// モデル
+	Model* model_ = nullptr;
+
+	// 終了フラグ
+	bool finished_ = false;
+
+	// SkyDome
+	Skydome* skydome_ = nullptr;
+	Model* modelSkydome_ = nullptr;
+	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
+
+	// Player
+	Model* model_ = nullptr;   // 3Dモデル
+	Player* player_ = nullptr; // 自機
 };

@@ -29,7 +29,7 @@ public:
 	void OnCollision();
 
 	// 発射間隔
-	static const int kFireInterval = 100;
+	static const int kFireInterval = 200;
 
 	// 弾リストを取得
 	const std::list<EnemyBullet*>& GetBullets() const { return bullets_; }

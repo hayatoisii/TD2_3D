@@ -69,8 +69,8 @@ private: // メンバ変数
 	// 敵Model
 	Model* modelEnemy_ = nullptr;
 
-	Vector3 playerPos = {0, 3, -45};
-	Vector3 enemyPos = {0, 3, 50};
+	Vector3 playerPos = {0, -0.5f, -45};
+	Vector3 enemyPos = {0, 3, 10};
 
 
 	// 天球

@@ -40,6 +40,7 @@ public:
 private:
 	WorldTransform worldtransfrom_;
 
+
 	Model* model_ = nullptr;
 
 	Input* input_ = nullptr;
@@ -58,4 +59,6 @@ private:
 
 	// 発射タイマー
 	int32_t spawnTimer = 0;
+	int rotationTimer_ = 0;           // 回転用のタイマー
+	const int kRotationDuration = 15; // 回転にかかるフレーム数
 };

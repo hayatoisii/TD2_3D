@@ -13,7 +13,7 @@ void Enemy::Initialize(Model* model, ViewProjection* camera, const Vector3& pos)
 	assert(model);
 	model_ = model;
 	camera_ = camera;
-	modelbullet_ = Model::CreateFromOBJ("cube", true);
+	modelbullet_ = Model::CreateFromOBJ("Bom", true);
 	worldtransfrom_.translation_ = pos;
 	worldtransfrom_.Initialize();
 }
@@ -47,7 +47,7 @@ void Enemy::Fire() {
 		Vector3 moveBullet = worldtransfrom_.translation_;
 
 		// 弾の初期速度
-		const float kBulletSpeed = 0.05f;
+		const float kBulletSpeed = 0.005f;
 
 		// プレイヤーへのベクトルを計算
 		Vector3 playerWorldPosition = player_->GetWorldPosition();

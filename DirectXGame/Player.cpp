@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Enemy.h"
+#include"imgui.h"
 #include <algorithm>
 #include <cassert>
 
@@ -108,39 +109,47 @@ void Player::Update() {
 	// キャラクターの移動速さ
 	const float kCharacterSpeed = 0.05f;
 	// 回転速さ[ラジアン/frame]
-	const float kRotSpeed = 0.5f;
+	/*const float kRotSpeed = 0.5f;*/
 
 	// 押した方向で移動ベクトルを変更(左右)
-	if (Input::GetInstance()->PushKey(DIK_LEFT)) {
+	if (Input::GetInstance()->PushKey(DIK_A)) {
 		move.x -= kCharacterSpeed;
-	} else if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
+	} else if (Input::GetInstance()->PushKey(DIK_D)) {
 		move.x += kCharacterSpeed;
 	}
 
 	// 押した方向で移動ベクトルを変更(上下)
-	if (Input::GetInstance()->PushKey(DIK_UP)) {
+	if (Input::GetInstance()->PushKey(DIK_W)) {
 		move.y += kCharacterSpeed;
-	} else if (Input::GetInstance()->PushKey(DIK_DOWN)) {
+	} else if (Input::GetInstance()->PushKey(DIK_S)) {
 		move.y -= kCharacterSpeed;
 	}
 
 	// 押した方向で移動ベクトルを変更
-	if (Input::GetInstance()->PushKey(DIK_SPACE)) {
-		worldtransfrom_.rotation_.y += kRotSpeed;
+	// スペースキーで回転を開始する
+	if (Input::GetInstance()->TriggerKey(DIK_SPACE) && rotationTimer_ == 0) {
+		rotationTimer_ = kRotationDuration; // 回転を開始する
+	}
+
+	// 回転中であれば回転を行う
+	if (rotationTimer_ > 0) {
+		float rotationStep = (2.0f * 3.14159265359f) / kRotationDuration; // 1フレームごとの回転量（360度をkRotationDurationフレームで割る）
+		worldtransfrom_.rotation_.y += rotationStep;
+		rotationTimer_--;
 	}
 	worldtransfrom_.translation_.x += move.x;
 	worldtransfrom_.translation_.y += move.y;
 
-	const float kMoveLimitX = 30;
-	const float kMoveLimitY = 15;
+	const float kMoveLimitX = 3;
+	const float kMoveLimitY = 1.5;
 
 	worldtransfrom_.translation_.x = std::clamp(worldtransfrom_.translation_.x, -kMoveLimitX, kMoveLimitX);
 	worldtransfrom_.translation_.y = std::clamp(worldtransfrom_.translation_.y, -kMoveLimitY, kMoveLimitY);
 
-	/*ImGui::Begin("Setmove");
+	ImGui::Begin("Setmove");
 	ImGui::SliderFloat("Move X", &worldtransfrom_.translation_.x, -1.0f, 1.0f);
 	ImGui::SliderFloat("Move Y", &worldtransfrom_.translation_.y, -1.0f, 1.0f);
-	ImGui::End();*/
+	ImGui::End();
 
 	worldtransfrom_.UpdateMatrix();
 }
@@ -154,3 +163,4 @@ void Player::Draw() {
 		bullet->Draw(*camera_);
 	}
 }
+

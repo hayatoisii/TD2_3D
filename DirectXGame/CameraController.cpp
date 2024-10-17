@@ -8,7 +8,7 @@ void CameraController::Initialize() {
 
 	viewProjection_.Initialize();
 	// カメラの初期設定など
-	viewProjection_.rotation_ = {0, 10, -16.0f}; // カメラの位置
+	viewProjection_.rotation_ = {0, 10, -45.0f}; // カメラの位置
 }
 
 void CameraController::Update() {

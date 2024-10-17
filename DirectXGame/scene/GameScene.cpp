@@ -46,8 +46,6 @@ void GameScene::Initialize() {
 	// 天球3Dモデルの生成
 	modelSkydome_ = Model::CreateFromOBJ("space", true);
 
-	// Bom生成
-	bom_ = new Bom();
 
 	// Bom3Dモデルの生成
 	modelBom_ = Model::CreateFromOBJ("bom", true);
@@ -62,8 +60,7 @@ void GameScene::Initialize() {
 	modelGround2_ = Model::CreateFromOBJ("ground2", true);
 	// 天球の初期化
 	skydome_->Initialize(modelSkydome_, &viewProjection_);
-	// Bom初期化
-	bom_->Initialize(modelBom_, &viewProjection_);
+
 	// 地面初期化
 	ground_->Initialize(modelGround_, &viewProjection_);
 	// 地面2初期化
@@ -98,8 +95,7 @@ void GameScene::Update() {
 
 	// 天球の更新
 	skydome_->Update();
-	// Bomの更新
-	bom_->Update();
+
 	// 地面更新
 	ground_->Update();
 	ground2_->Update();
@@ -130,6 +126,8 @@ void GameScene::Update() {
 
 	// カメラ更新
 	cameraController_->Update();
+
+	
 
 	player_->Update();
 	enemy_->Update();

@@ -111,7 +111,6 @@
     <ClCompile Include="AABB.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
-    <ClCompile Include="Bom.cpp" />
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBullet.cpp" />
@@ -152,7 +151,6 @@
     <ClInclude Include="base\StringUtility.h" />
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
-    <ClInclude Include="Bom.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="easing.h" />
     <ClInclude Include="Enemy.h" />

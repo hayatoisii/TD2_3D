@@ -2,7 +2,7 @@
 
 #include "AABB.h"
 #include "Audio.h"
-#include "Bom.h"
+
 #include "CameraController.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
@@ -77,8 +77,7 @@ private: // メンバ変数
 	Skydome* skydome_ = nullptr;
 	// 3Dモデル
 	Model* modelSkydome_ = nullptr;
-	// 爆弾
-	Bom* bom_ = nullptr;
+
 	// 爆弾3Dモデル
 	Model* modelBom_ = nullptr;
 	// 地面
@@ -114,7 +113,7 @@ private: // メンバ変数
 	// BGMが再生されているかを追跡
 	bool isBGMPlaying_ = false;
 	// アタックテクスチャ描画フラグ
-	bool Drawflg = true;
+	bool Drawflg = false;
 	// ディレイが開始されたかどうかを管理
 	bool delayStarted = false;
 	// 時間計測用の変数を追加

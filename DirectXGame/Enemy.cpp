@@ -1,5 +1,5 @@
 #include "Enemy.h"
-
+#include "Player.h"
 
 Enemy::~Enemy() {
 
@@ -13,9 +13,7 @@ void Enemy::Initialize(Model* model, ViewProjection* camera, const Vector3& pos)
 	assert(model);
 	model_ = model;
 	camera_ = camera;
-	modelbullet_ = Model::CreateFromOBJ("Bom", true);
-	
-
+	modelbullet_ = Model::CreateFromOBJ("cube", true);
 	worldtransfrom_.translation_ = pos;
 	worldtransfrom_.Initialize();
 }
@@ -34,6 +32,10 @@ Vector3 Enemy::GetWorldPosition() {
 
 void Enemy::OnCollision() {}
 
+void EnemyBullet::SetTarget(Player* target) {
+	player_ = target; // プレイヤーをターゲットとして設定
+}
+
 void Enemy::Fire() {
 
 	assert(player_);
@@ -44,26 +46,28 @@ void Enemy::Fire() {
 
 		Vector3 moveBullet = worldtransfrom_.translation_;
 
-		// 弾の速度
-		const float kBulletSpeed = -1.0f;
+		// 弾の初期速度
+		const float kBulletSpeed = 0.05f;
 
-		Vector3 velocity(0, 0, 0);
+		// プレイヤーへのベクトルを計算
+		Vector3 playerWorldPosition = player_->GetWorldPosition();
+		Vector3 enemyWorldPosition = GetWorldPosition();
+		Vector3 toPlayer = Normalize(playerWorldPosition - enemyWorldPosition);
 
-		Vector3 playerWorldtransform = player_->GetWorldPosition();
-		Vector3 enemyWorldtransform = GetWorldPosition();
-		Vector3 homingBullet = enemyWorldtransform - playerWorldtransform;
-		homingBullet = Normalize(homingBullet);
-		velocity.x += kBulletSpeed * homingBullet.x;
-		velocity.y += kBulletSpeed * homingBullet.y;
-		velocity.z += kBulletSpeed * homingBullet.z;
+		// 初期速度はプレイヤーに向かうベクトルで設定
+		Vector3 velocity = toPlayer * kBulletSpeed;
 
 		// 弾を生成し、初期化
 		EnemyBullet* newBullet = new EnemyBullet();
 		newBullet->Initialize(modelbullet_, moveBullet, velocity);
 
-		// 弾を登録する
+		// ターゲット（プレイヤー）を追尾するように設定
+		newBullet->SetTarget(player_);
+
+		// 弾をリストに追加
 		bullets_.push_back(newBullet);
 
+		// 発射タイマーリセット
 		spawnTimer = kFireInterval;
 	}
 }

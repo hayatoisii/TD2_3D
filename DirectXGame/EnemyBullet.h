@@ -1,6 +1,7 @@
 #pragma once
 #include "AABB.h"
-#include <ViewProjection.h>
+#include "Player.h"
+#include <viewprojection.h>
 #include <3d/Model.h>
 #include <3d/WorldTransform.h>
 class EnemyBullet {
@@ -9,7 +10,7 @@ public:
 
 	void Update();
 
-	void Draw(const ::ViewProjection& camera);
+	void Draw(const ViewProjection& camera);
 
 	~EnemyBullet();
 
@@ -22,10 +23,14 @@ public:
 
 	AABB GetAABB();
 
+	Player* player_ = nullptr;
+
+	void SetTarget(Player* target);
+
 private:
-	::WorldTransform worldtransfrom_;
-	::Model* model_ = nullptr;
-	::Vector3 velocity_;
+	WorldTransform worldtransfrom_;
+	Model* model_ = nullptr;
+	Vector3 velocity_;
 
 	// 寿命<frm>
 	static const int32_t kLifeTime = 60 * 3;

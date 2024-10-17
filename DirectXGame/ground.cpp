@@ -5,7 +5,7 @@ void Ground::Initialize(Model* model, ViewProjection* viewProjection) {
 	worldTransform_.Initialize();
 	model_ = model;
 	viewProjection_ = viewProjection;
-	worldTransform_.translation_.y = -1.5f;
+	worldTransform_.translation_.y = -1.9f;
 	worldTransform_.translation_.z = 0.0f; // 初期位置
 }
 

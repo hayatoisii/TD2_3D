@@ -75,8 +75,19 @@ private: // メンバ変数
 	DebugCamera* debugCamera_ = nullptr;
 	//カメラ
 	CameraController* cameraController_ = nullptr;
+	//サウンドデータ
+	uint32_t BattleBGMHandle_ = 0;
+	
+	//アタックテクスチャ
+	uint32_t AttackTextureHandle_ = 0;
+	Sprite* AttackSprite_ = nullptr;
 
-
+	//アタックバーテクスチャ
+	uint32_t AttackBarTextureHandle_ = 0;
+	Sprite* AttackBarSprite_ = nullptr;
+	
+	//バー速度
+	float Yspeed = 10.0f;
 
 	//終了フラグ
 	bool finished_ = false;
@@ -84,12 +95,18 @@ private: // メンバ変数
 	bool isDebugCameraActive_ = false;
 	// BGMが再生されているかを追跡
 	bool isBGMPlaying_ = false; 
+	//アタックテクスチャ描画フラグ
+	bool Drawflg = true;
+	// ディレイが開始されたかどうかを管理
+	bool delayStarted = false; 
+	// 時間計測用の変数を追加
+	clock_t start_time = 0;    // スペースキーが押された時の時間を記録
 
 
 
-	//サウンドデータ
-	uint32_t BattleBGMHandle_ = 0;
-	
+
+
+
 
 	/// <summary>
 	/// ゲームシーン用

@@ -16,7 +16,7 @@ void Skydome::Update() {
 	// 行列を定数バッファに転送
 	worldTransform_.TransferMatrix();
 
-	worldTransform_.rotation_.y += 0.007f; // 回転速度は調整可能
+	worldTransform_.rotation_.y += 0.008f; // 回転速度は調整可能
 	// 行列計算
 	worldTransform_.UpdateMatrix();
 }

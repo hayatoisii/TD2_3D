@@ -4,9 +4,17 @@
 
 #include <cassert>
 
+// 3秒wait
+
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {}
+GameScene::~GameScene() {
+	delete modelSkydome_;
+	delete modelBom_;
+	delete modelGround_;
+	delete modelGround2_;
+	delete AttackSprite_;
+}
 
 void GameScene::Initialize() {
 
@@ -52,6 +60,13 @@ void GameScene::Initialize() {
 
 	// サウンドデータの読み込み
 	BattleBGMHandle_ = audio_->LoadWave("./sound/battle.wav");
+
+	// テクスチャデータの読み込み
+	AttackTextureHandle_ = TextureManager::Load("attack/attack.png");
+	AttackSprite_ = Sprite::Create(AttackTextureHandle_, {800, 50});
+
+	AttackBarTextureHandle_ = TextureManager::Load("attack/attackbar.png");
+	AttackBarSprite_ = Sprite::Create(AttackBarTextureHandle_, {800, 60}); // 上55,下490
 }
 
 void GameScene::Update() {
@@ -69,9 +84,32 @@ void GameScene::Update() {
 	ground_->Update();
 	ground2_->Update();
 
+	// スプライト
+	Vector2 AttackBarPos = AttackBarSprite_->GetPosition();
+
+	AttackBarPos.y += Yspeed;
+
+	if (AttackBarPos.y <= 55 || AttackBarPos.y >= 490) {
+		Yspeed = -Yspeed;
+	}
+
+	if (input_->TriggerKey(DIK_SPACE)) { // スペースキーが押されたら
+		Yspeed = 0;
+		start_time = clock(); // スペースキーを押した時の時間を記録
+		delayStarted = true;  // ディレイが開始されたことをフラグで管理
+	}
+	// ディレイ中かどうかをチェック
+	if (delayStarted) {
+		// 3秒が経過したかをチェック
+		if (clock() >= start_time + 3000) { // 3秒 (3000ミリ秒) 経過後
+			Drawflg = false;                // 描画フラグをfalseにする
+			delayStarted = false;           // ディレイ終了
+		}
+	}
+	AttackBarSprite_->SetPosition(AttackBarPos);
+
 	// カメラ更新
 	cameraController_->Update();
-
 	// カメラ処理
 	if (isDebugCameraActive_) {
 		// デバッグカメラの更新
@@ -149,7 +187,13 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 	///
+	// if (input_->PushKey(DIK_C)) {
 
+	if (Drawflg == true) {
+		AttackSprite_->Draw();
+		AttackBarSprite_->Draw();
+	}
+	//}
 	// スプライト描画後処理
 	Sprite::PostDraw();
 

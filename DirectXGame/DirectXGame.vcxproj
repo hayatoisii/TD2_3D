@@ -148,6 +148,7 @@
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="Bom.h" />
     <ClInclude Include="CameraController.h" />
+    <ClInclude Include="easing.h" />
     <ClInclude Include="GameClear.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="Ground.h" />

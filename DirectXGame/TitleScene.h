@@ -38,6 +38,8 @@ private:
 
 	// モデル
 	Model* model_ = nullptr;
+	Model* pushmodel_ = nullptr;
+	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 
 	// 終了フラグ
 	bool finished_ = false;
@@ -45,7 +47,4 @@ private:
 	// SkyDome
 	Skydome* skydome_ = nullptr;
 	Model* modelSkydome_ = nullptr;
-	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
-
-
 };

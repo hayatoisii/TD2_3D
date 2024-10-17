@@ -7,12 +7,14 @@ TitleScene::TitleScene() {}
 TitleScene::~TitleScene() {
 	delete model_;
 	delete skydome_;
+	delete pushmodel_;
 }
 
 void TitleScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 
 	model_ = Model::CreateFromOBJ("title", true);
+	pushmodel_ = Model::CreateFromOBJ("push", true);
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
 
@@ -21,7 +23,9 @@ void TitleScene::Initialize() {
 	modelSkydome_ = Model::CreateFromOBJ("skydomeTitle", true);
 	skydome_->Initialize(modelSkydome_, &viewProjection_);
 	// タイトルを調整
-	worldTransform_.translation_ = {-18.0f, 13.0f, 0.0f};
+	worldTransform_.scale_ = { 15.0f, 15.0f, 15.0f };
+	worldTransform_.rotation_ = { 0.0f, 0.0f, 0.0f };
+	worldTransform_.translation_ = { 3.0f, 0.0f, 0.0f };
 	// 行列計算
 	worldTransform_.UpdateMatrix();
 	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
@@ -53,6 +57,7 @@ void TitleScene::Draw() {
 	Model::PreDraw(commandList);
 
 	model_->Draw(worldTransform_, viewProjection_);
+	pushmodel_->Draw(worldTransform_, viewProjection_);
 
 	skydome_->Draw();
 

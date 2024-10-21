@@ -40,6 +40,7 @@ void Enemy::OnCollision() {
 
 	if (hp == 0) {
 		isDead_ = true;
+		
 	}
 }
 
@@ -114,7 +115,7 @@ void Enemy::Update() {
 
 void Enemy::Draw() {
 
-	if (isDead_==false) {
+	if (isDead_ == false) {
 
 		model_->Draw(worldtransfrom_, *camera_);
 	}

@@ -36,6 +36,7 @@ private:
 
 	uint32_t titleTextureHandle_ = 0;
 
+
 	// モデル
 	Model* model_ = nullptr;
 

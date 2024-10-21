@@ -25,27 +25,22 @@ void GameScene::Initialize() {
 	worldTransform_.Initialize();
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
-	
 
 	player_ = new Player();
 	enemy_ = new Enemy();
 
-	//プレイヤーモデル生成
+	// プレイヤーモデル生成
 	modelPlayer_ = Model::CreateFromOBJ("player", true);
-	//敵モデル生成
+	// 敵モデル生成
 	modelEnemy_ = Model::CreateFromOBJ("enemy", true);
-
-	
 
 	player_->Initialize(modelPlayer_, &viewProjection_, playerPos);
 	enemy_->Initialize(modelEnemy_, &viewProjection_, enemyPos);
-
 
 	// 天球の生成
 	skydome_ = new Skydome();
 	// 天球3Dモデルの生成
 	modelSkydome_ = Model::CreateFromOBJ("space", true);
-
 
 	// Bom3Dモデルの生成
 	modelBom_ = Model::CreateFromOBJ("bom", true);
@@ -87,6 +82,7 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
+
 	// BGMが再生されていない場合のみ再生する
 	if (!isBGMPlaying_) {
 		audio_->PlayWave(BattleBGMHandle_, true, 0.1f);
@@ -127,15 +123,11 @@ void GameScene::Update() {
 	// カメラ更新
 	cameraController_->Update();
 
-	
-
 	player_->Update();
 	enemy_->Update();
-	CheckAllCollisions();
+	/*CheckAllCollisions();*/
 
-
-
-	#pragma region DEBUGCamera
+#pragma region DEBUGCamera
 	// カメラ処理
 	if (isDebugCameraActive_) {
 		// デバッグカメラの更新
@@ -148,9 +140,6 @@ void GameScene::Update() {
 		// ビュープロジェクションの転送
 		viewProjection_.TransferMatrix();
 	}
-	if (Input::GetInstance()->PushKey(DIK_2)) {
-		finished_ = true;
-	}
 
 	if (input_->TriggerKey(DIK_F1)) {
 		if (isDebugCameraActive_ == true)
@@ -158,7 +147,9 @@ void GameScene::Update() {
 		else
 			isDebugCameraActive_ = true;
 	}
+
 #pragma endregion
+	ChangePhease();
 
 	// imGui
 	ImGui::Begin("debug");
@@ -233,8 +224,8 @@ void GameScene::Draw() {
 void GameScene::CheckAllCollisions() {
 
 	Vector3 posA[4], posB[4];
-	float radiusA[3] = {0.8f, 5.0f, 0.8f}; // プレイヤーの半径（固定値）
-	float radiusB[3] = {0.8f, 5.0f, 0.8f}; // 敵弾の半径（固定値）
+	float radiusA[3] = {0.8f, 5.0f, 0.8f};  // プレイヤーの半径（固定値）
+	float radiusB[3] = {0.15f, 5.0f, 0.8f}; // 敵弾の半径（固定値）
 
 	// 敵弾リストの取得
 	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
@@ -296,4 +287,37 @@ void GameScene::CheckAllCollisions() {
 	}
 
 #pragma endregion
+}
+
+void GameScene::ChangePhease() {
+
+	switch (phase_) {
+	case Phase::kPlay:
+
+		// 自キャラの状態をチェック
+		if (player_->IsDead()) {
+			// 死亡フェーズに切り替え
+			phase_ = Phase::kDeath;
+		}
+
+		if (enemy_->IsClear()) {
+			phase_ = Phase::kClear;
+		}
+		CheckAllCollisions();
+
+		break;
+	case Phase::kDeath:
+		// デス演出フェーズの処理
+		if (player_->IsDead()) {
+			finished_ = true;
+		}
+		break;
+
+	case Phase::kClear:
+		// デス演出フェーズの処理
+		if (enemy_->IsClear()) {
+			Clear_ = true;
+		}
+		break;
+	}
 }

@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "Enemy.h"
-#include"imgui.h"
+#include "imgui.h"
 #include <algorithm>
 #include <cassert>
 
@@ -24,9 +24,21 @@ void Player::Initialize(Model* model, ViewProjection* camera, const Vector3& pos
 	input_ = Input::GetInstance();
 }
 
-void Player::OnCollision() { isDead_ = true; }
+void Player::OnCollision() {
+	isDamage_ = true;
+
+	if (isDamage_ == true && !isParry_) {
+		hp -= Damage;
+	}
+
+	if (hp<=0) {
+		isDead_ = true;
+	}
+}
 
 void Player::Parry() { isParry_ = true; }
+
+void Player::Dead() {}
 
 void Player::Attack() {
 
@@ -131,7 +143,6 @@ void Player::Update() {
 		rotationTimer_ = kRotationDuration; // 回転を開始する
 	}
 
-	
 	if (rotationTimer_ > 0) {
 		float rotationStep = (2.0f * 3.14159265359f) / kRotationDuration; // 1フレームごとの回転量（360度をkRotationDurationフレームで割る）
 		worldtransfrom_.rotation_.y += rotationStep;
@@ -150,17 +161,20 @@ void Player::Update() {
 	ImGui::SliderFloat("Move X", &worldtransfrom_.translation_.x, -1.0f, 1.0f);
 	ImGui::SliderFloat("Move Y", &worldtransfrom_.translation_.y, -1.0f, 1.0f);
 	ImGui::End();*/
+	
 
+	ImGui::Text("PlayerHP:%d", hp);
 	worldtransfrom_.UpdateMatrix();
 }
 
 void Player::Draw() {
+	if (!isDead_) {
 
-	model_->Draw(worldtransfrom_, *camera_);
+		model_->Draw(worldtransfrom_, *camera_);
+	}
 
 	// 弾描画
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(*camera_);
 	}
 }
-

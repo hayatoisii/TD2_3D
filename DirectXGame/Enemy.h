@@ -34,6 +34,8 @@ public:
 	// 弾リストを取得
 	const std::list<EnemyBullet*>& GetBullets() const { return bullets_; }
 
+	bool IsClear() const { return isDead_; }
+
 private:
 	WorldTransform worldtransfrom_;
 	Model* model_ = nullptr;
@@ -46,7 +48,7 @@ private:
 
 	// 発射タイマー
 	int32_t spawnTimer = 0;
-	int hp = 5000;
+	int hp = 1000;
 	bool isDamage_ = false;
 	bool isDead_ = false;
 

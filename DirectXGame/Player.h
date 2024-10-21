@@ -25,6 +25,8 @@ public:
 	// パリィを検出したら呼び出されるコールバック関数
 	void Parry();
 
+	void Dead();
+
 	Vector3 GetWorldPosition();
 
 	const std::list<PlayerBullet*>& GetBullets() const { return bullets_; }
@@ -36,6 +38,8 @@ public:
 	static inline const float kHeight = 1.0f;
 
 	void SetEnemy(Enemy* enemy) { enemy_ = enemy; }
+	bool IsDead() const { return isDead_; }
+	
 
 private:
 	WorldTransform worldtransfrom_;
@@ -49,11 +53,16 @@ private:
 
 	Model* modelbullet_ = nullptr;
 
+	int hp = 100;
+
 	// 弾
 	std::list<PlayerBullet*> bullets_;
 
 	bool isDead_ = false;
 	bool isParry_ = false;
+	bool isDamage_ = false;
+
+	int Damage = 50;
 
 	Enemy* enemy_ = nullptr;
 

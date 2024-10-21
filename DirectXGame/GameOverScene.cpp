@@ -11,6 +11,8 @@ void GameOverScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+	ClearTexHandle = TextureManager::Load("clear/clear.png");
+	Clearsprite_ = Sprite::Create(ClearTexHandle, {0, 0});
 }
 
 void GameOverScene::Update() {
@@ -57,6 +59,7 @@ void GameOverScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	Clearsprite_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

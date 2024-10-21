@@ -54,7 +54,11 @@ public: // メンバ関数
 	Player* player_ = nullptr;
 	Enemy* enemy_ = nullptr;
 
+	void ChangePhease();
+
 	bool IsFinished() const { return finished_; }
+
+	bool IsClear() const { return Clear_; }
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -103,11 +107,21 @@ private: // メンバ変数
 	uint32_t AttackBarTextureHandle_ = 0;
 	Sprite* AttackBarSprite_ = nullptr;
 
+	enum class Phase {
+		kPlay,  // ゲームプレイ
+		kDeath, // デス演出
+		kClear, // クリア
+	};
+
+	// ゲームの現在フェーズ(変数)
+	Phase phase_;
+
 	// バー速度
 	float Yspeed = 10.0f;
 
 	// 終了フラグ
 	bool finished_ = false;
+	bool Clear_ = false;
 	// デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
 	// BGMが再生されているかを追跡

@@ -54,13 +54,13 @@ void EnemyBullet::Update() {
 	Vector3 toPlayer = Normalize(playerPosition - bulletPosition);
 
 	// 現在の進行方向を少しずつプレイヤー方向に補正
-	float adjustmentFactor = 0.1f; // 補正の割合。値を調整することで追尾の滑らかさを変更
+	float adjustmentFactor = 0.03f; // 補正の割合。値を調整することで追尾の滑らかさを変更
 	velocity_ = Normalize(velocity_ + toPlayer * adjustmentFactor);
 
 	// 速度に基づいて弾の位置を更新
-	worldtransfrom_.translation_.x += velocity_.x * 1.0f;
-	worldtransfrom_.translation_.y += velocity_.y * 1.0f;
-	worldtransfrom_.translation_.z += velocity_.z * 1.0f;
+	worldtransfrom_.translation_.x += velocity_.x * 0.9f;
+	worldtransfrom_.translation_.y += velocity_.y * 0.9f;
+	worldtransfrom_.translation_.z += velocity_.z * 0.9f;
 
 	// ワールド行列を更新
 	worldtransfrom_.UpdateMatrix();

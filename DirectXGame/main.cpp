@@ -1,10 +1,11 @@
 #include "Audio.h"
 #include "AxisIndicator.h"
 #include "DirectXCommon.h"
-#include "TitleScene.h"
-#include "GameScene.h"
-#include "GameOverScene.h"
 #include "GameClear.h"
+#include "GameOverScene.h"
+#include "GameScene.h"
+#include "TitleScene.h"
+#include "player.h"
 
 #include "ImGuiManager.h"
 #include "PrimitiveDrawer.h"
@@ -12,6 +13,7 @@
 #include "WinApp.h"
 
 GameScene* gameScene = nullptr;
+Player* player = nullptr;
 TitleScene* titleScene = nullptr;
 GameOverScene* gameOverScene = nullptr;
 GameClearScene* gameClearScene = nullptr;
@@ -42,7 +44,6 @@ const char* GetSceneName(Scene scenes) {
 	}
 }
 
-
 void ChangeScene() {
 	switch (scene) {
 	case Scene::kTitle:
@@ -67,6 +68,16 @@ void ChangeScene() {
 			// 新シーンの生成と初期化
 			gameOverScene = new GameOverScene;
 			gameOverScene->Initialize();
+		}
+		else if (gameScene->IsClear()) {
+			// シーン変更
+			scene = Scene::kGameClear;
+			// 旧シーンの解放
+			delete gameScene;
+			gameScene = nullptr;
+			// 新シーンの生成と初期化
+			gameClearScene = new GameClearScene;
+			gameClearScene->Initialize();
 		}
 		break;
 	case Scene::kGameOver:
@@ -186,11 +197,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	gameScene = new GameScene();
 	gameScene->Initialize();
 	scene = Scene::kGameOver;
-	//ゲームオーバーシーン初期化
+	// ゲームオーバーシーン初期化
 	gameOverScene = new GameOverScene();
 	gameOverScene->Initialize();
 	scene = Scene::kGameClear;
-	//ゲームクリアシーン初期化
+	// ゲームクリアシーン初期化
 	gameClearScene = new GameClearScene();
 	gameClearScene->Initialize();
 	scene = Scene::kTitle;
@@ -206,12 +217,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		imguiManager->Begin();
 		// 入力関連の毎フレーム処理
 		input->Update();
-		//シーン
+		// シーン
 		ChangeScene();
 		UpdateScene();
 
-		
-		//imGui
+		// imGui
 		ImGui::Begin("Scene");
 		ImGui::Text("Scene: %s", GetSceneName(scene)); // シーン名を表示
 		ImGui::End();

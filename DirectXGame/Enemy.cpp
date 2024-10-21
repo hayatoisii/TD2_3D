@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "Player.h"
+#include "imgui.h"
 
 Enemy::~Enemy() {
 
@@ -30,7 +31,17 @@ Vector3 Enemy::GetWorldPosition() {
 	return worldPos;
 }
 
-void Enemy::OnCollision() {}
+void Enemy::OnCollision() {
+	isDamage_ = true;
+
+	if (isDamage_ == true) {
+		hp -= 500;
+	}
+
+	if (hp == 0) {
+		isDead_ = true;
+	}
+}
 
 void EnemyBullet::SetTarget(Player* target) {
 	player_ = target; // プレイヤーをターゲットとして設定
@@ -75,7 +86,6 @@ void Enemy::Fire() {
 void Enemy::Update() {
 
 	Fire();
-
 	// 弾更新
 	for (EnemyBullet* bullet : bullets_) {
 		bullet->Update();
@@ -97,31 +107,17 @@ void Enemy::Update() {
 	// 離脱
 	Vector3 eliminationSpeed = {0.3f, 0.3f, 0.3f};
 
-	/*/
-	switch (phase_) {
-	case Phase::Approach:
-	default:
-	    // 移動(ベクトルを加算)
-	    worldtransfrom_.translation_.z -= accessSpeed.z;
-	    // 規定の位置に到達したら離脱
-	    if (worldtransfrom_.translation_.z < 0.0f) {
-	        phase_ = Phase::Leave;
-	    }
-	    break;
-	case Phase::Leave:
-	    // 移動(ベクトルを加算)
-	    worldtransfrom_.translation_.y += eliminationSpeed.y;
-	    break;
-
-	}
-	/*/
-
 	worldtransfrom_.UpdateMatrix();
+
+	ImGui::Text("EnemyHP:%d", hp);
 }
 
 void Enemy::Draw() {
 
-	model_->Draw(worldtransfrom_, *camera_);
+	if (isDead_==false) {
+
+		model_->Draw(worldtransfrom_, *camera_);
+	}
 
 	for (EnemyBullet* bullet : bullets_) {
 		bullet->Draw(*camera_);

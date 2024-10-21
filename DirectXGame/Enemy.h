@@ -1,10 +1,10 @@
 #pragma once
 #include "EnemyBullet.h"
 #include "MyMath.h"
-#include <ViewProjection.h>
-#include <Model.h>
-#include <WorldTransform.h>
 #include "Player.h"
+#include <Model.h>
+#include <ViewProjection.h>
+#include <WorldTransform.h>
 #include <cassert>
 
 class Player;
@@ -46,6 +46,9 @@ private:
 
 	// 発射タイマー
 	int32_t spawnTimer = 0;
+	int hp = 5000;
+	bool isDamage_ = false;
+	bool isDead_ = false;
 
 	Player* player_ = nullptr;
 

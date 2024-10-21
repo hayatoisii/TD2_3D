@@ -33,6 +33,7 @@ public: // メンバ関数
 	/// </summary>
 	~GameScene();
 
+	void Reset();
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -59,6 +60,7 @@ public: // メンバ関数
 	bool IsFinished() const { return finished_; }
 
 	bool IsClear() const { return Clear_; }
+
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -97,7 +99,10 @@ private: // メンバ変数
 	// カメラ
 	CameraController* cameraController_ = nullptr;
 	// サウンドデータ
-	uint32_t BattleBGMHandle_ = 0;
+	/*int BattleBGMHandle_ = 0;*/
+	int BattleBGMHandle_ = 0;
+	int BattleAudio_ = -1;
+	
 
 	// アタックテクスチャ
 	uint32_t AttackTextureHandle_ = 0;
@@ -132,6 +137,7 @@ private: // メンバ変数
 	bool delayStarted = false;
 	// 時間計測用の変数を追加
 	clock_t start_time = 0; // スペースキーが押された時の時間を記録
+
 
 	/// <summary>
 	/// ゲームシーン用

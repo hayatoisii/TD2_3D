@@ -83,13 +83,13 @@ void ChangeScene() {
 	case Scene::kGameOver:
 		if (gameOverScene->IsFinished()) {
 			// シーン変更
-			scene = Scene::kGameClear;
+			scene = Scene::kTitle;
 			// 旧シーンの解放
 			delete gameOverScene;
 			gameOverScene = nullptr;
 			// 新シーンの生成と初期化
-			gameClearScene = new GameClearScene;
-			gameClearScene->Initialize();
+			titleScene = new TitleScene;
+			titleScene->Initialize();
 		}
 		break;
 	case Scene::kGameClear:

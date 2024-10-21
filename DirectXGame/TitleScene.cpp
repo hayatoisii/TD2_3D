@@ -1,8 +1,11 @@
 #include "TitleScene.h"
 #include "TextureManager.h"
-#include <Input.h>
+#include "imgui.h"
 
-TitleScene::TitleScene() {}
+#include <Input.h>
+#include <cmath> // sin関数を使用するために必要
+
+TitleScene::TitleScene() { finished_ = false; }
 
 TitleScene::~TitleScene() {
 	delete model_;
@@ -21,7 +24,13 @@ void TitleScene::Initialize() {
 	modelSkydome_ = Model::CreateFromOBJ("skydomeTitle", true);
 	skydome_->Initialize(modelSkydome_, &viewProjection_);
 	// タイトルを調整
-	worldTransform_.translation_ = {-18.0f, 13.0f, 0.0f};
+	worldTransform_.translation_ = {4.0f, 0.0f, 0.0f};
+	worldTransform_.scale_ = {3.5f, 3.5f, 3.5f};
+
+	// 初期Y軸位置と回転初期化
+	initialYPosition_ = worldTransform_.translation_.y;
+	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
+
 	// 行列計算
 	worldTransform_.UpdateMatrix();
 	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
@@ -30,8 +39,19 @@ void TitleScene::Initialize() {
 }
 
 void TitleScene::Update() {
-	if (Input::GetInstance()->PushKey(DIK_1)) {
+	UpdateRotation();
+
+	UpdateVerticalMovement();
+
+	// 行列計算
+	worldTransform_.UpdateMatrix();
+	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+	worldTransform_.TransferMatrix();
+
+	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
 		finished_ = true;
+		rotationFinished_ = false; // 回転flgをリセット
+		worldTransform_.rotation_.y = 0.0f;
 	}
 }
 
@@ -63,4 +83,34 @@ void TitleScene::Draw() {
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
+}
+
+void TitleScene::UpdateRotation() {
+	// モデルの回転を制御
+	static float rotationTime = 0.0f;
+
+	// 回転が完了していない場合
+	if (rotationTime < 1.0f && !rotationFinished_) {
+		// イージングアウトのcubicを使って緩急をつける
+		rotationTime += 0.02f;                                                // 時間の進みを少し遅くする
+		float easedRotationTime = 1.0f - std::pow(1.0f - rotationTime, 3.0f); // イージングアウト (cubic)
+		worldTransform_.rotation_.y = 4.0f * 3.14f * easedRotationTime;       // 2回転 (2π * 2)
+	} else {
+		// 回転が完了したのでフラグを設定
+		rotationFinished_ = true;
+		worldTransform_.rotation_.y = 0.0f;
+	}
+}
+
+void TitleScene::UpdateVerticalMovement() {
+	// モデルが回転し終わった後に上下に揺れる動きをつける
+	static float time = 0.0f; // 時間カウンター
+
+	time += 0.02f; // 少しずつ時間を進める
+
+	// sin波に基づくY軸の変化量を計算
+	float yOffset = std::sin(time) * 0.5f; // 振幅0.5で上下に動かす
+
+	// タイトルのY軸位置を更新
+	worldTransform_.translation_.y = initialYPosition_ + yOffset;
 }

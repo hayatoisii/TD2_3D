@@ -22,6 +22,11 @@ void Player::Initialize(Model* model, ViewProjection* camera, const Vector3& pos
 	worldtransfrom_.Initialize();
 	worldtransfrom_.translation_ = pos;
 	input_ = Input::GetInstance();
+	PryAudio_ = Audio::GetInstance();
+	DmgAudio_ = Audio::GetInstance();
+	
+	ParryAudioHandle_ = PryAudio_->LoadWave("./sound/parry.wav");
+	DamageAudioHandle_ = DmgAudio_->LoadWave("./sound/damage.wav");
 }
 
 void Player::OnCollision() {
@@ -29,6 +34,12 @@ void Player::OnCollision() {
 
 	if (isDamage_ == true && !isParry_) {
 		hp -= Damage;
+		DmgAudio_->playAudio(DamageAudio_, DamageAudioHandle_,false,0.7f);
+		// 点滅を開始する
+		isBlinking_ = true;
+		blinkTimer_ = kBlinkDuration;
+
+		
 	}
 
 	if (hp<=0) {
@@ -36,7 +47,11 @@ void Player::OnCollision() {
 	}
 }
 
-void Player::Parry() { isParry_ = true; }
+void Player::Parry() { isParry_ = true;
+	if (isParry_) {
+		PryAudio_->playAudio(ParryAudio_, ParryAudioHandle_,false,0.7f);
+	}
+}
 
 void Player::Dead() {}
 
@@ -157,6 +172,15 @@ void Player::Update() {
 	worldtransfrom_.translation_.x = std::clamp(worldtransfrom_.translation_.x, -kMoveLimitX, kMoveLimitX);
 	worldtransfrom_.translation_.y = std::clamp(worldtransfrom_.translation_.y, -kMoveLimitY, kMoveLimitY);
 
+	// 点滅の更新
+	if (isBlinking_) {
+		blinkTimer_--;
+		if (blinkTimer_ <= 0) {
+			isBlinking_ = false;
+		}
+	}
+
+
 	/*ImGui::Begin("Setmove");
 	ImGui::SliderFloat("Move X", &worldtransfrom_.translation_.x, -1.0f, 1.0f);
 	ImGui::SliderFloat("Move Y", &worldtransfrom_.translation_.y, -1.0f, 1.0f);
@@ -169,8 +193,10 @@ void Player::Update() {
 
 void Player::Draw() {
 	if (!isDead_) {
-
-		model_->Draw(worldtransfrom_, *camera_);
+		// 点滅中はフレームごとに描画するかどうかを切り替える
+		if (!isBlinking_ || (blinkTimer_ / (kBlinkDuration / 10)) % 2 == 0) {
+			model_->Draw(worldtransfrom_, *camera_);
+		}
 	}
 
 	// 弾描画

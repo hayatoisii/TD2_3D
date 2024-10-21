@@ -1,5 +1,6 @@
 #pragma once
 #include "AABB.h"
+#include "Audio.h"
 #include "Mymath.h"
 #include "PlayerBullet.h"
 #include <ViewProjection.h>
@@ -43,16 +44,21 @@ public:
 
 private:
 	WorldTransform worldtransfrom_;
-
-
+	Audio* PryAudio_ = nullptr;
+	Audio* DmgAudio_ = nullptr;
 	Model* model_ = nullptr;
-
 	Input* input_ = nullptr;
-
 	ViewProjection* camera_ = nullptr;
-
 	Model* modelbullet_ = nullptr;
 
+	//跳ね返す音
+	int ParryAudioHandle_ = 0;
+	int ParryAudio_ = -1;
+	//ダメージ音
+	int DamageAudioHandle_ = 0;
+	int DamageAudio_ = -1;
+
+	//プレイヤーHP
 	int hp = 100;
 
 	// 弾
@@ -70,4 +76,9 @@ private:
 	int32_t spawnTimer = 0;
 	int rotationTimer_ = 0;           // 回転用のタイマー
 	const int kRotationDuration = 15; // 回転にかかるフレーム数
+
+	 // 点滅関連の変数
+	static const int kBlinkDuration = 60; // 点滅の継続時間 (1秒間のフレーム数)
+	bool isBlinking_ = false;             // 点滅中かどうかのフラグ
+	int blinkTimer_ = 0;                  // 点滅のためのタイマー
 };

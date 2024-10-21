@@ -11,12 +11,12 @@ void GameOverScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
-	ClearTexHandle = TextureManager::Load("clear/clear.png");
+	ClearTexHandle = TextureManager::Load("gameover/gameover.png");
 	Clearsprite_ = Sprite::Create(ClearTexHandle, {0, 0});
 }
 
 void GameOverScene::Update() {
-	if (Input::GetInstance()->PushKey(DIK_3)) {
+	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
 		finished_ = true;
 	}
 }

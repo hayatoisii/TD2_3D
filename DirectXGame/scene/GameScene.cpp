@@ -16,6 +16,8 @@ GameScene::~GameScene() {
 	delete AttackSprite_;
 }
 
+
+
 void GameScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
@@ -85,7 +87,7 @@ void GameScene::Update() {
 
 	// BGMが再生されていない場合のみ再生する
 	if (!isBGMPlaying_) {
-		audio_->PlayWave(BattleBGMHandle_, true, 0.1f);
+		audio_->playAudio(BattleAudio_, BattleBGMHandle_, true, 0.3f);
 		isBGMPlaying_ = true; // フラグを立てる
 	}
 
@@ -298,10 +300,12 @@ void GameScene::ChangePhease() {
 		if (player_->IsDead()) {
 			// 死亡フェーズに切り替え
 			phase_ = Phase::kDeath;
+			audio_->StopAudio(BattleAudio_);
 		}
 
 		if (enemy_->IsClear()) {
 			phase_ = Phase::kClear;
+			audio_->StopAudio(BattleAudio_);
 		}
 		CheckAllCollisions();
 

@@ -14,7 +14,7 @@ void GameClearScene::Initialize() {
 }
 
 void GameClearScene::Update() {
-	if (Input::GetInstance()->PushKey(DIK_4)) {
+	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
 		finished_ = true;
 	}
 }

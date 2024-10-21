@@ -5,6 +5,9 @@
 #include <Model.h>
 #include <ViewProjection.h>
 #include <WorldTransform.h>
+
+
+
 #include <cassert>
 
 class Player;
@@ -18,6 +21,7 @@ class Enemy {
 public:
 	void Initialize(Model* model, ViewProjection* camera, const Vector3& pos);
 	void Update();
+	bool ShouldTransitionPhase() const;
 	void Draw();
 	~Enemy();
 	void Fire();
@@ -42,7 +46,7 @@ private:
 	ViewProjection* camera_ = nullptr;
 
 	Model* modelbullet_ = nullptr;
-
+	
 	// 弾
 	std::list<EnemyBullet*> bullets_;
 
@@ -57,4 +61,13 @@ private:
 	Phase phase_ = Phase::Approach;
 
 	Phase Bulletphase_ = Phase::Approach;
+
+	 // 点滅関連の変数
+	static const int kBlinkDuration = 60; // 点滅の継続時間（フレーム数）
+	bool isBlinking_ = false;             // 点滅中かどうかのフラグ
+	int blinkTimer_ = 0;                  // 点滅のためのタイマー
+	bool isClear_ = false;
+	clock_t clearStartTime_ = 0; // 敵が倒された瞬間の時間を記録する変数
+
+	Vector3 initialPosition_ = {0, 5, 10}; // 初期位置を保存するための変数
 };

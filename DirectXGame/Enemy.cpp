@@ -35,12 +35,14 @@ void Enemy::OnCollision() {
 	isDamage_ = true;
 
 	if (isDamage_ == true) {
-		hp -= 500;
+		hp -= 100;
 	}
 
-	if (hp == 0) {
+	if (hp <= 0) {
 		isDead_ = true;
-		
+		isBlinking_ = true;           // 点滅を開始する
+		blinkTimer_ = kBlinkDuration; // 点滅時間を設定
+		clearStartTime_ = clock();    // 敵が倒された瞬間の時間を記録
 	}
 }
 
@@ -87,6 +89,25 @@ void Enemy::Fire() {
 void Enemy::Update() {
 
 	Fire();
+
+	  // sin波に基づいて上下に動く処理
+	static float time = 0.0f;              // 時間を記録するカウンター
+	time += 0.08f;                         // 時間を進める
+	float yOffset = std::sin(time) * 0.5f; // 振幅0.5のsin波で上下に動かす
+
+	// 初期位置からのY軸のオフセットを加える
+	worldtransfrom_.translation_.y = initialPosition_.y + yOffset;
+
+	// 点滅の更新
+	if (isBlinking_) {
+		blinkTimer_--;
+		if (blinkTimer_ <= 0) {
+			isBlinking_ = false;
+			isClear_ = true; // 点滅が終了したら敵をクリア状態にする
+		}
+	}
+
+
 	// 弾更新
 	for (EnemyBullet* bullet : bullets_) {
 		bullet->Update();
@@ -113,11 +134,21 @@ void Enemy::Update() {
 	ImGui::Text("EnemyHP:%d", hp);
 }
 
+bool Enemy::ShouldTransitionPhase() const {
+	if (isDead_ && (clock() >= clearStartTime_ + 2200)) {
+		// 点滅終了後、2秒経過した場合にシーン遷移を許可
+		return true;
+	}
+	return false;
+}
+
 void Enemy::Draw() {
 
-	if (isDead_ == false) {
-
-		model_->Draw(worldtransfrom_, *camera_);
+	if (!isClear_) {
+		// 点滅中はフレームごとに描画するかどうかを切り替える
+		if (!isBlinking_ || (blinkTimer_ / 5) % 2 == 0) {
+			model_->Draw(worldtransfrom_, *camera_);
+		}
 	}
 
 	for (EnemyBullet* bullet : bullets_) {

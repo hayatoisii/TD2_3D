@@ -11,9 +11,14 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vecto
 	worldtransfrom_.translation_ = position;
 	worldtransfrom_.Initialize();
 	velocity_ = velocity;
+
+
 }
 
-void PlayerBullet::OnCollision() { isDead_ = true; }
+void PlayerBullet::OnCollision() {
+	isDead_ = true;
+	
+}
 
 void PlayerBullet::Update() {
 

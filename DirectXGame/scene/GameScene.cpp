@@ -16,13 +16,17 @@ GameScene::~GameScene() {
 	delete AttackSprite_;
 }
 
-
-
 void GameScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+	atkAudio_ = Audio::GetInstance();
+
+	// サウンドデータの読み込み
+	BattleBGMHandle_ = audio_->LoadWave("./sound/battle.wav");
+
+	AttackAudioHandle_ = atkAudio_->LoadWave("./sound/Attack.wav");
 	// ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
 	// ビュープロジェクションの初期化
@@ -67,9 +71,6 @@ void GameScene::Initialize() {
 	// カメラコントロールの初期化
 	cameraController_ = new CameraController(); // 生成
 	cameraController_->Initialize();
-
-	// サウンドデータの読み込み
-	BattleBGMHandle_ = audio_->LoadWave("./sound/battle.wav");
 
 	// テクスチャデータの読み込み
 	AttackTextureHandle_ = TextureManager::Load("attack/attack.png");
@@ -285,6 +286,7 @@ void GameScene::CheckAllCollisions() {
 		if (distanceSquared <= combinedRadiusSquared) {
 			enemy_->OnCollision();
 			bullet->OnCollision();
+			atkAudio_->playAudio(attackAudio_, AttackAudioHandle_,false,1.0f);
 		}
 	}
 
@@ -303,7 +305,8 @@ void GameScene::ChangePhease() {
 			audio_->StopAudio(BattleAudio_);
 		}
 
-		if (enemy_->IsClear()) {
+		if (enemy_->ShouldTransitionPhase()) {
+			// 敵がクリアされてから2秒後にフェーズ遷移
 			phase_ = Phase::kClear;
 			audio_->StopAudio(BattleAudio_);
 		}

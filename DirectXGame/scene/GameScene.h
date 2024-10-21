@@ -66,6 +66,15 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+	Audio* atkAudio_ = nullptr;
+
+	// attack音
+	int AttackAudioHandle_ = 0;
+	int attackAudio_ = -1;
+
+	int BattleBGMHandle_ = 0;
+	int BattleAudio_ = -1;
+
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_;
 	// ビュープロジェクション
@@ -100,8 +109,7 @@ private: // メンバ変数
 	CameraController* cameraController_ = nullptr;
 	// サウンドデータ
 	/*int BattleBGMHandle_ = 0;*/
-	int BattleBGMHandle_ = 0;
-	int BattleAudio_ = -1;
+	
 	
 
 	// アタックテクスチャ

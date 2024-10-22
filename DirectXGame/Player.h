@@ -7,9 +7,8 @@
 #include <3d/Model.h>
 #include <list>
 #include <Input.h>
-
-
-
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 class Enemy;
 
@@ -41,9 +40,17 @@ public:
 	void SetEnemy(Enemy* enemy) { enemy_ = enemy; }
 	bool IsDead() const { return isDead_; }
 	
+	Vector3 velocity_ = {};
+	const WorldTransform& GetWorldTransform() const { return worldtransfrom_; }
+	const Vector3& GetVelocity() const { return velocity_; }
+
+	void Update2();
+
+	void Update3();
+
+	WorldTransform worldtransfrom_;
 
 private:
-	WorldTransform worldtransfrom_;
 	Audio* PryAudio_ = nullptr;
 	Audio* DmgAudio_ = nullptr;
 	Model* model_ = nullptr;

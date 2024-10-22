@@ -112,6 +112,36 @@ AABB Player::GetAABB() {
 	return aabb;
 }
 
+
+void Player::Update2() {
+
+	// 回転角度（時間経過に応じて増加）
+	static float angle = 0.0f;
+	const float radius = 10.0f; // プレイヤーの回転半径
+	const float speed = 0.01f;  // 回転速度
+
+	// Z軸を中心に円を描くようにプレイヤー位置を更新
+	worldtransfrom_.translation_.x = radius * cos(angle); // X座標を更新
+	worldtransfrom_.translation_.y = radius * sin(angle); // Y座標は固定
+	worldtransfrom_.translation_.z = radius * sin(angle); // Z座標を更新
+	worldtransfrom_.rotation_.y += 0.02f;
+	worldtransfrom_.rotation_.x += 0.02f;
+
+	angle += speed;
+	if (angle >= 2 * static_cast<float>(M_PI)) { // M_PIをfloatにキャスト
+		angle -= 2 * static_cast<float>(M_PI);
+	}
+
+	worldtransfrom_.UpdateMatrix();
+}
+
+void Player::Update3() {
+
+	worldtransfrom_.UpdateMatrix();
+
+}
+
+
 void Player::Update() {
 
 	Attack();
@@ -180,16 +210,11 @@ void Player::Update() {
 		}
 	}
 
-
-	/*ImGui::Begin("Setmove");
-	ImGui::SliderFloat("Move X", &worldtransfrom_.translation_.x, -1.0f, 1.0f);
-	ImGui::SliderFloat("Move Y", &worldtransfrom_.translation_.y, -1.0f, 1.0f);
-	ImGui::End();*/
-	
-
 	ImGui::Text("PlayerHP:%d", hp);
 	worldtransfrom_.UpdateMatrix();
 }
+
+
 
 void Player::Draw() {
 	if (!isDead_) {

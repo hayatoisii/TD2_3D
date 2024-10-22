@@ -50,7 +50,11 @@ public: // メンバ関数
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
-	Audio* audio_ = nullptr;
+	Audio* GamOverAudio_ = nullptr;
+	int gameoverAudioHandle = 0;
+	int gameoverAudio = -1;
+	bool isBGMPlaying_ = false;
+
 
 	int32_t ClearTexHandle = 0;
 	// スプライト

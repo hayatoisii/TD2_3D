@@ -17,7 +17,9 @@ GameOverScene::~GameOverScene() {
 void GameOverScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
-	audio_ = Audio::GetInstance();
+	GamOverAudio_ = Audio::GetInstance();
+
+	gameoverAudioHandle = GamOverAudio_->LoadWave("./sound/GameOver.wav");
 
 	player_ = new Player();
 	secondPlayer_ = new Player(); // 新しいプレイヤーを作成
@@ -52,8 +54,12 @@ void GameOverScene::Initialize() {
 }
 
 void GameOverScene::Update() {
-
+	if (!isBGMPlaying_) {
+		GamOverAudio_->playAudio(gameoverAudio, gameoverAudioHandle, true, 0.5f);
+		isBGMPlaying_ = true;
+	}
 	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
+		GamOverAudio_->StopAudio(gameoverAudio);
 		finished_ = true;
 	}
 

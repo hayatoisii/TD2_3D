@@ -5,8 +5,14 @@
 
 namespace Easing {
 
-// Ease Out Quad
-float easeOutQuad(float t) { return 1.0f - (1.0f - t) * (1.0f - t); }
+// EaseOutQuad
+float EaseOutQuad(float t) { return t * (2 - t); }
+
+float EaseOutBack(float t) {
+	float c1 = 1.70158f;
+	float c3 = c1 + 1.0f;
+	return 1.0f + c3 * powf(t - 1.0f, 3) + c1 * powf(t - 1.0f, 2);
+}
 
 // Ease In Quad
 float easeInQuad(float t) { return t * t; }
@@ -89,6 +95,22 @@ float easeInOutElastic(float t) {
 	       : t == 1.0f ? 1.0f
 	       : t < 0.5f  ? -(static_cast<float>(pow(2.0f, 20.0f * t - 10.0f)) * static_cast<float>(sin((20.0f * t - 11.125f) * c5))) / 2.0f
 	                   : (static_cast<float>(pow(2.0f, -20.0f * t + 10.0f)) * static_cast<float>(sin((20.0f * t - 11.125f) * c5))) / 2.0f + 1.0f;
+}
+
+// イージング関数の例
+float EaseOutBounce(float t) {
+	if (t < 1 / 2.75f) {
+		return 7.5625f * t * t;
+	} else if (t < 2 / 2.75f) {
+		t -= 1.5f / 2.75f;
+		return 7.5625f * t * t + 0.75f;
+	} else if (t < 2.5f / 2.75f) {
+		t -= 2.25f / 2.75f;
+		return 7.5625f * t * t + 0.9375f;
+	} else {
+		t -= 2.625f / 2.75f;
+		return 7.5625f * t * t + 0.984375f;
+	}
 }
 
 } // namespace Easing

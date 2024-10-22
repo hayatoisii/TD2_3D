@@ -86,11 +86,53 @@ void Enemy::Fire() {
 	}
 }
 
+void Enemy::preFire() {
+	assert(player_);
+
+	spawnTimer--;
+
+	if (spawnTimer < -0.0f) {
+
+		Vector3 moveBullet = worldtransfrom_.translation_;
+
+		// 弾の初期速度
+		const float kBulletSpeed = 0.005f;
+
+		// プレイヤーへのベクトルを計算
+		Vector3 playerWorldPosition = player_->GetWorldPosition();
+		Vector3 enemyWorldPosition = GetWorldPosition();
+		Vector3 toPlayer = Normalize(playerWorldPosition - enemyWorldPosition);
+
+		// 初期速度はプレイヤーに向かうベクトルで設定
+		Vector3 velocity = toPlayer * kBulletSpeed;
+
+		// 弾を生成し、初期化
+		EnemyBullet* newBullet = new EnemyBullet();
+		newBullet->Initialize(modelbullet_, moveBullet, velocity);
+
+		// ターゲット（プレイヤー）を追尾するように設定
+		newBullet->SetTarget(player_);
+
+		// 弾をリストに追加
+		bullets_.push_back(newBullet);
+
+		// 発射タイマーリセット
+		spawnTimer = kFireInterval;
+	}
+}
+
 void Enemy::Update() {
 
-	Fire();
+	FireTimer_++;
 
-	  // sin波に基づいて上下に動く処理
+	if (FireTimer_ >= 800 && FireTimer_ <= 1320) {
+		preFire();
+	}
+
+	if (FireTimer_ >= 1700) {
+		Fire();
+	}
+	// sin波に基づいて上下に動く処理
 	static float time = 0.0f;              // 時間を記録するカウンター
 	time += 0.08f;                         // 時間を進める
 	float yOffset = std::sin(time) * 0.5f; // 振幅0.5のsin波で上下に動かす
@@ -106,7 +148,6 @@ void Enemy::Update() {
 			isClear_ = true; // 点滅が終了したら敵をクリア状態にする
 		}
 	}
-
 
 	// 弾更新
 	for (EnemyBullet* bullet : bullets_) {
@@ -132,6 +173,7 @@ void Enemy::Update() {
 	worldtransfrom_.UpdateMatrix();
 
 	ImGui::Text("EnemyHP:%d", hp);
+	ImGui::Text("FireTimer:%d", FireTimer_);
 }
 
 bool Enemy::ShouldTransitionPhase() const {
@@ -143,6 +185,7 @@ bool Enemy::ShouldTransitionPhase() const {
 }
 
 void Enemy::Draw() {
+	// コマンドリストの取得
 
 	if (!isClear_) {
 		// 点滅中はフレームごとに描画するかどうかを切り替える

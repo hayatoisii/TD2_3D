@@ -147,6 +147,22 @@ private: // メンバ変数
 	clock_t start_time = 0; // スペースキーが押された時の時間を記録
 
 
+	// チュートリアル用変数
+	int Timer_ = 0;
+	Sprite* preSprite0 = nullptr;
+	Sprite* preSprite1 = nullptr;
+	Sprite* preSprite2 = nullptr;
+	Sprite* preSprite3 = nullptr;
+	Sprite* preSprite4 = nullptr;
+
+	uint32_t preHandle0_ = 0;
+	uint32_t preHandle1_ = 0;
+	uint32_t preHandle2_ = 0;
+	uint32_t preHandle3_ = 0;
+	uint32_t preHandle4_ = 0;
+
+
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

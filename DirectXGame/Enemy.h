@@ -2,13 +2,14 @@
 #include "EnemyBullet.h"
 #include "MyMath.h"
 #include "Player.h"
+
+
 #include <Model.h>
+#include <TextureManager.h>
 #include <ViewProjection.h>
 #include <WorldTransform.h>
-
-
-
 #include <cassert>
+#include <Sprite.h>
 
 class Player;
 
@@ -25,6 +26,7 @@ public:
 	void Draw();
 	~Enemy();
 	void Fire();
+	void preFire();
 
 	Vector3 GetWorldPosition();
 
@@ -41,12 +43,13 @@ public:
 	bool IsClear() const { return isDead_; }
 
 private:
+	
 	WorldTransform worldtransfrom_;
 	Model* model_ = nullptr;
 	ViewProjection* camera_ = nullptr;
 
 	Model* modelbullet_ = nullptr;
-	
+
 	// 弾
 	std::list<EnemyBullet*> bullets_;
 
@@ -62,12 +65,13 @@ private:
 
 	Phase Bulletphase_ = Phase::Approach;
 
-	 // 点滅関連の変数
+	// 点滅関連の変数
 	static const int kBlinkDuration = 60; // 点滅の継続時間（フレーム数）
 	bool isBlinking_ = false;             // 点滅中かどうかのフラグ
 	int blinkTimer_ = 0;                  // 点滅のためのタイマー
 	bool isClear_ = false;
-	clock_t clearStartTime_ = 0; // 敵が倒された瞬間の時間を記録する変数
-
+	clock_t clearStartTime_ = 0;           // 敵が倒された瞬間の時間を記録する変数
 	Vector3 initialPosition_ = {0, 5, 10}; // 初期位置を保存するための変数
+
+	int FireTimer_ = 0;
 };

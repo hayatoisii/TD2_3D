@@ -1,8 +1,13 @@
 #include "GameScene.h"
 #include "ImGuiManager.h"
 #include "TextureManager.h"
+#include "Easing.h"
 
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#include <cmath> // std::sin を使用
 #include <cassert>
+#include <algorithm>
+
 
 // 3秒wait
 
@@ -79,13 +84,27 @@ void GameScene::Initialize() {
 	AttackBarTextureHandle_ = TextureManager::Load("attack/attackbar.png");
 	AttackBarSprite_ = Sprite::Create(AttackBarTextureHandle_, {800, 60}); // 上55,下490
 
+	// テクスチャロード
+	preHandle0_ = TextureManager::Load("/pre/pre0.png");
+	preHandle1_ = TextureManager::Load("/pre/pre1.png");
+	preHandle2_ = TextureManager::Load("/pre/pre2.png");
+	preHandle3_ = TextureManager::Load("/pre/pre3.png");
+	preHandle4_ = TextureManager::Load("/pre/pre4.png");
+
+	// スプライト生成
+	preSprite0 = Sprite::Create(preHandle0_, {0, 0});
+	preSprite1 = Sprite::Create(preHandle1_, {0, 0});
+	preSprite2 = Sprite::Create(preHandle2_, {0, 0});
+	preSprite3 = Sprite::Create(preHandle3_, {0, 0});
+	preSprite4 = Sprite::Create(preHandle4_, {0, 0});
+
 	// 敵キャラに自キャラのアドレスを渡す
 	enemy_->SetPlayer(player_);
 	player_->SetEnemy(enemy_);
 }
 
 void GameScene::Update() {
-
+	Timer_++;
 	// BGMが再生されていない場合のみ再生する
 	if (!isBGMPlaying_) {
 		audio_->playAudio(BattleAudio_, BattleBGMHandle_, true, 0.3f);
@@ -102,16 +121,9 @@ void GameScene::Update() {
 	// スプライト
 	Vector2 AttackBarPos = AttackBarSprite_->GetPosition();
 
-	AttackBarPos.y += Yspeed;
-
-	if (AttackBarPos.y <= 55 || AttackBarPos.y >= 490) {
-		Yspeed = -Yspeed;
-	}
-
 	if (input_->TriggerKey(DIK_SPACE)) { // スペースキーが押されたら
-		Yspeed = 0;
-		start_time = clock(); // スペースキーを押した時の時間を記録
-		delayStarted = true;  // ディレイが開始されたことをフラグで管理
+		start_time = clock();            // スペースキーを押した時の時間を記録
+		delayStarted = true;             // ディレイが開始されたことをフラグで管理
 	}
 	// ディレイ中かどうかをチェック
 	if (delayStarted) {
@@ -121,7 +133,6 @@ void GameScene::Update() {
 			delayStarted = false;           // ディレイ終了
 		}
 	}
-	AttackBarSprite_->SetPosition(AttackBarPos);
 
 	// カメラ更新
 	cameraController_->Update();
@@ -157,6 +168,7 @@ void GameScene::Update() {
 	// imGui
 	ImGui::Begin("debug");
 	ImGui::Text("IsDebugCamera: %d", isDebugCameraActive_); // シーン名を表示
+	ImGui::Text("Timer: %d", Timer_); // シーン名を表示
 	// ImGui::Text("IsRotate: %f", skydomeRotate); // シーン名を表示
 	ImGui::End();
 }
@@ -212,11 +224,121 @@ void GameScene::Draw() {
 	/// </summary>
 	///
 	// if (input_->PushKey(DIK_C)) {
-
-	if (Drawflg == true) {
-		AttackSprite_->Draw();
-		AttackBarSprite_->Draw();
+	
+	//命描画
+	if (Timer_ >= 0 && Timer_ <= 740) {
+		float progress = std::clamp(Timer_ / 30.0f, 0.0f, 1.0f);
+		float scale = Easing::EaseOutBack(progress);
+		Vector2 size = {scale * 1280.0f, scale * 720.0f};
+		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から拡大
+		preSprite0->SetPosition(position);
+		preSprite0->SetSize(size);
+		preSprite0->Draw();
 	}
+
+	//pre1
+	if (Timer_ >= 0 && Timer_ <= 260) {
+		float progress = std::clamp(Timer_ / 30.0f, 0.0f, 1.0f);
+		float scale = Easing::EaseOutBack(progress);
+		Vector2 size = {scale * 1280.0f, scale * 720.0f};
+		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から拡大
+		preSprite1->SetPosition(position);
+		preSprite1->SetSize(size);
+	    preSprite1->Draw();
+	}
+
+	//pre2
+	if (Timer_ >= 260 && Timer_ <= 500) {
+		float progress = std::clamp((Timer_ - 240) / 60.0f, 0.0f, 1.0f);
+		float scale = Easing::EaseOutBack(progress);
+		Vector2 size = {scale * 1280.0f, scale * 720.0f};
+		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から拡大
+		preSprite2->SetPosition(position);
+		preSprite2->SetSize(size);
+		preSprite2->Draw();
+	}
+
+	//pre3
+	if (Timer_ >= 500 && Timer_ <= 740) {
+		float progress = std::clamp((Timer_ - 480) / 60.0f, 0.0f, 1.0f);
+		float scale = Easing::EaseOutBack(progress);
+		Vector2 size = {scale * 1280.0f, scale * 720.0f};
+		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から拡大
+		preSprite3->SetPosition(position);
+		preSprite3->SetSize(size);
+		preSprite3->Draw();
+	}
+
+	//pre3アウト
+	if (Timer_ >= 740 && Timer_ <= 770) {
+		float progress = std::clamp((Timer_ - 740) / 30.0f, 0.0f, 1.0f);
+		float scale = Easing::EaseOutBack(1.0f - progress);
+		Vector2 size = {scale * 1280.0f, scale * 720.0f};
+		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から拡大
+		preSprite3->SetPosition(position);
+		preSprite3->SetSize(size);
+		preSprite3->Draw();
+	}
+
+	//pre0アウト
+	if (Timer_ >= 740 && Timer_ <= 770) {
+		float progress = std::clamp((Timer_ - 740) / 30.0f, 0.0f, 1.0f); // 60フレームで描画アウト
+		float scale = Easing::EaseOutBack(1.0f - progress);               // 描画終了時にイージングアウト
+		Vector2 size = {scale * 1280.0f, scale * 720.0f};
+		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から縮小
+		preSprite0->SetPosition(position);
+		preSprite0->SetSize(size);
+		preSprite0->Draw();
+	}
+
+
+	//pre0描画
+	if (Timer_ >= 1320 && Timer_ <= 1600) {
+		float progress = std::clamp((Timer_ - 1320) / 30.0f, 0.0f, 1.0f);
+		float scale = Easing::EaseOutBack(progress);
+		Vector2 size = {scale * 1280.0f, scale * 720.0f};
+		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から拡大
+		preSprite0->SetPosition(position);
+		preSprite0->SetSize(size);
+		preSprite0->Draw();
+	}
+
+
+	//pre4
+	if (Timer_ >= 1320 && Timer_ <= 1600) {
+		float progress = std::clamp((Timer_ - 1320) / 30.0f, 0.0f, 1.0f);
+		float scale = Easing::EaseOutBack(progress);
+		Vector2 size = {scale * 1280.0f, scale * 720.0f};
+		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から拡大
+		preSprite4->SetPosition(position);
+		preSprite4->SetSize(size);
+		preSprite4->Draw();
+	}
+
+	//pre4アウト
+	if (Timer_ >= 1600 && Timer_ <= 1630) {
+		float progress = std::clamp((Timer_ - 1600) / 30.0f, 0.0f, 1.0f); // 60フレームで描画アウト
+		float scale = Easing::EaseOutBack(1.0f - progress);                       // 描画終了時にイージングアウト
+		Vector2 size = {scale * 1280.0f, scale * 720.0f};
+		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から縮小
+		preSprite4->SetPosition(position);
+		preSprite4->SetSize(size);
+		preSprite4->Draw();
+	}
+
+	//pre0アウト
+	if (Timer_ >= 1600 && Timer_ <= 1630) {
+		float progress = std::clamp((Timer_ - 1600) / 30.0f, 0.0f, 1.0f); // 60フレームで描画アウト
+		float scale = Easing::EaseOutBack(1.0f - progress);               // 描画終了時にイージングアウト
+		Vector2 size = {scale * 1280.0f, scale * 720.0f};
+		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から縮小
+		preSprite0->SetPosition(position);
+		preSprite0->SetSize(size);
+		preSprite0->Draw();
+	}
+
+
+
 	//}
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -286,7 +408,7 @@ void GameScene::CheckAllCollisions() {
 		if (distanceSquared <= combinedRadiusSquared) {
 			enemy_->OnCollision();
 			bullet->OnCollision();
-			atkAudio_->playAudio(attackAudio_, AttackAudioHandle_,false,1.0f);
+			atkAudio_->playAudio(attackAudio_, AttackAudioHandle_, false, 1.0f);
 		}
 	}
 

@@ -3,13 +3,12 @@
 #include "MyMath.h"
 #include "Player.h"
 
-
 #include <Model.h>
+#include <Sprite.h>
 #include <TextureManager.h>
 #include <ViewProjection.h>
 #include <WorldTransform.h>
 #include <cassert>
-#include <Sprite.h>
 
 class Player;
 
@@ -18,8 +17,11 @@ enum class Phase {
 	Leave,    // 離脱する
 };
 
+
+
 class Enemy {
 public:
+	
 	void Initialize(Model* model, ViewProjection* camera, const Vector3& pos);
 	void Update();
 	bool ShouldTransitionPhase() const;
@@ -27,6 +29,13 @@ public:
 	~Enemy();
 	void Fire();
 	void preFire();
+
+	// 攻撃パターン
+	void AttackPattern();
+	void NormalFire();
+	void BombFire();
+	void EnhancedFire();
+	void FinalFire();
 
 	Vector3 GetWorldPosition();
 
@@ -43,12 +52,12 @@ public:
 	bool IsClear() const { return isDead_; }
 
 private:
-	
 	WorldTransform worldtransfrom_;
 	Model* model_ = nullptr;
 	ViewProjection* camera_ = nullptr;
 	Input* input_ = nullptr;
 	Model* modelbullet_ = nullptr;
+	Model* atkbullet_ = nullptr;
 
 	// 弾
 	std::list<EnemyBullet*> bullets_;
@@ -73,6 +82,10 @@ private:
 	bool isClear_ = false;
 	clock_t clearStartTime_ = 0;           // 敵が倒された瞬間の時間を記録する変数
 	Vector3 initialPosition_ = {0, 5, 10}; // 初期位置を保存するための変数
+
+	// 安全エリアの範囲を定義
+	const Vector3 safeAreaCenter = {0.0f, 0.0f, 0.0f}; // 安全エリアの中心
+	const float safeAreaRadius = 1.0f;                 // 安全エリアの半径
 
 	int FireTimer_ = 0;
 };

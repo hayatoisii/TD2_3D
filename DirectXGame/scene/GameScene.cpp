@@ -233,7 +233,7 @@ void GameScene::Draw() {
 	
 	//命描画
 	if (Timer_ >= 0 && Timer_ <= 740) {
-		float progress = std::clamp(Timer_ / 30.0f, 0.0f, 1.0f);
+		float progress = std::clamp(Timer_ / 60.0f, 0.0f, 1.0f);
 		float scale = Easing::EaseOutBack(progress);
 		Vector2 size = {scale * 1280.0f, scale * 720.0f};
 		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から拡大
@@ -244,7 +244,7 @@ void GameScene::Draw() {
 
 	//pre1
 	if (Timer_ >= 0 && Timer_ <= 260) {
-		float progress = std::clamp(Timer_ / 30.0f, 0.0f, 1.0f);
+		float progress = std::clamp(Timer_ / 60.0f, 0.0f, 1.0f);
 		float scale = Easing::EaseOutBack(progress);
 		Vector2 size = {scale * 1280.0f, scale * 720.0f};
 		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から拡大
@@ -374,7 +374,9 @@ void GameScene::CheckAllCollisions() {
 		posB[0] = bullet->GetWorldPosition();
 
 		// 2つの球の中心間の距離の二乗を計算
-		float distanceSquared = (posA[0].x - posB[0].x) * (posA[0].x - posB[0].x) + (posA[0].y - posB[0].y) * (posA[0].y - posB[0].y) + (posA[0].z - posB[0].z) * (posA[0].z - posB[0].z);
+		float distanceSquared = (posA[0].x - posB[0].x) * (posA[0].x - posB[0].x) + 
+			(posA[0].y - posB[0].y) * (posA[0].y - posB[0].y) + 
+			(posA[0].z - posB[0].z) * (posA[0].z - posB[0].z);
 
 		// 半径の合計の二乗
 		float combinedRadiusSquared = (radiusA[0] + radiusB[0]) * (radiusA[0] + radiusB[0]);

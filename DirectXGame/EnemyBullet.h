@@ -4,9 +4,15 @@
 #include <viewprojection.h>
 #include <3d/Model.h>
 #include <3d/WorldTransform.h>
+enum class BulletType {
+	Bom,
+	Atk,
+};
+
 class EnemyBullet {
 public:
-	void Initialize(Model* model, const Vector3& position, const Vector3& velocity);
+	BulletType bulletType_;
+	void Initialize(Model* model, const Vector3& position, const Vector3& velocity, BulletType type);
 
 	void Update();
 

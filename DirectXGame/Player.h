@@ -3,19 +3,18 @@
 #include "Audio.h"
 #include "Mymath.h"
 #include "PlayerBullet.h"
-#include <ViewProjection.h>
 #include <3d/Model.h>
-#include <list>
 #include <Input.h>
-
-
-
+#include <ViewProjection.h>
+#include <list>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 class Enemy;
 
 class Player {
 public:
-	void Initialize(Model* model,ViewProjection* camera, const Vector3& pos);
+	void Initialize(Model* model, ViewProjection* camera, const Vector3& pos);
 	void Update();
 	void Draw();
 	~Player();
@@ -40,10 +39,18 @@ public:
 
 	void SetEnemy(Enemy* enemy) { enemy_ = enemy; }
 	bool IsDead() const { return isDead_; }
-	
+
+	Vector3 velocity_ = {};
+	const WorldTransform& GetWorldTransform() const { return worldtransfrom_; }
+	const Vector3& GetVelocity() const { return velocity_; }
+
+	void Update2();
+
+	void Update3();
+
+	WorldTransform worldtransfrom_;
 
 private:
-	WorldTransform worldtransfrom_;
 	Audio* PryAudio_ = nullptr;
 	Audio* DmgAudio_ = nullptr;
 	Model* model_ = nullptr;
@@ -51,14 +58,14 @@ private:
 	ViewProjection* camera_ = nullptr;
 	Model* modelbullet_ = nullptr;
 
-	//跳ね返す音
+	// 跳ね返す音
 	int ParryAudioHandle_ = 0;
 	int ParryAudio_ = -1;
-	//ダメージ音
+	// ダメージ音
 	int DamageAudioHandle_ = 0;
 	int DamageAudio_ = -1;
 
-	//プレイヤーHP
+	// プレイヤーHP
 	int hp = 100;
 
 	// 弾
@@ -77,7 +84,7 @@ private:
 	int rotationTimer_ = 0;           // 回転用のタイマー
 	const int kRotationDuration = 15; // 回転にかかるフレーム数
 
-	 // 点滅関連の変数
+	// 点滅関連の変数
 	static const int kBlinkDuration = 60; // 点滅の継続時間 (1秒間のフレーム数)
 	bool isBlinking_ = false;             // 点滅中かどうかのフラグ
 	int blinkTimer_ = 0;                  // 点滅のためのタイマー

@@ -121,6 +121,12 @@ void GameScene::Update() {
 	// スプライト
 	Vector2 AttackBarPos = AttackBarSprite_->GetPosition();
 
+	//チュートリアルスキップ
+	if (input_->TriggerKey(DIK_RETURN)) { // スペースキーが押されたら
+		Timer_ = 1600;
+	}
+
+	//プレイヤー回転
 	if (input_->TriggerKey(DIK_SPACE)) { // スペースキーが押されたら
 		start_time = clock();            // スペースキーを押した時の時間を記録
 		delayStarted = true;             // ディレイが開始されたことをフラグで管理

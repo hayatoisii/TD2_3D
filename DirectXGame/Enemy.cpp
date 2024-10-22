@@ -17,6 +17,7 @@ void Enemy::Initialize(Model* model, ViewProjection* camera, const Vector3& pos)
 	modelbullet_ = Model::CreateFromOBJ("Bom", true);
 	worldtransfrom_.translation_ = pos;
 	worldtransfrom_.Initialize();
+	input_ = Input::GetInstance();
 }
 
 Vector3 Enemy::GetWorldPosition() {
@@ -128,7 +129,9 @@ void Enemy::Update() {
 	if (FireTimer_ >= 800 && FireTimer_ <= 1320) {
 		preFire();
 	}
-
+	if (input_->TriggerKey(DIK_RETURN)) { // スペースキーが押されたら
+		FireTimer_ = 1600;               // ディレイが開始されたことをフラグで管理
+	}
 	if (FireTimer_ >= 1700) {
 		Fire();
 	}

@@ -47,7 +47,7 @@ private:
 	WorldTransform worldtransfrom_;
 	Model* model_ = nullptr;
 	ViewProjection* camera_ = nullptr;
-
+	Input* input_ = nullptr;
 	Model* modelbullet_ = nullptr;
 
 	// 弾
@@ -55,7 +55,8 @@ private:
 
 	// 発射タイマー
 	int32_t spawnTimer = 0;
-	int hp = 1000;
+	int hp = 2000;
+
 	bool isDamage_ = false;
 	bool isDead_ = false;
 

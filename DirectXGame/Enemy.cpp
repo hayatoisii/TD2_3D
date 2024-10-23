@@ -47,7 +47,7 @@ void Enemy::OnCollision() {
 	isDamage_ = true;
 
 	if (isDamage_ == true) {
-		enemyhp -= 1000;
+		enemyhp -= 100;
 	}
 
 	if (enemyhp <= 0) {

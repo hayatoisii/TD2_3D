@@ -383,11 +383,13 @@ void GameScene::CheckAllCollisions() {
 		float Parry = (radiusA[1] + radiusB[1]) * (radiusA[1] + radiusB[1]);
 
 		if (distanceSquared <= Parry) {
-			// パリィの呼び出し
-			if (input_->TriggerKey(DIK_SPACE)) {
-				player_->Parry();
-				player_->OnCollision();
-				bullet->OnCollision();
+			if (bullet->bulletType_ == BulletType::Bom) {
+				// パリィの呼び出し
+				if (input_->TriggerKey(DIK_SPACE)) {
+					player_->Parry();
+					player_->OnCollision();
+					bullet->OnCollision();
+				}
 			}
 		}
 

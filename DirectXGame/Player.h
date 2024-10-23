@@ -66,7 +66,7 @@ private:
 	int DamageAudio_ = -1;
 
 	// プレイヤーHP
-	int hp = 100;
+	int hp = 500;
 
 	// 弾
 	std::list<PlayerBullet*> bullets_;

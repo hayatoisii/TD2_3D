@@ -22,7 +22,6 @@ void Enemy::Initialize(Model* model, ViewProjection* camera, const Vector3& pos)
 	worldtransfrom_.translation_ = pos;
 	worldtransfrom_.Initialize();
 	input_ = Input::GetInstance();
-	
 }
 
 Vector3 Enemy::GetWorldPosition() {
@@ -79,8 +78,7 @@ void Enemy::Fire() {
 
 		// 弾を生成し、初期化
 		EnemyBullet* newBullet = new EnemyBullet();
-		newBullet->Initialize(modelbullet_, moveBullet, velocity,BulletType::Bom);
-
+		newBullet->Initialize(modelbullet_, moveBullet, velocity, BulletType::Bom);
 
 		// ターゲット（プレイヤー）を追尾するように設定
 		newBullet->SetTarget(player_);
@@ -115,7 +113,7 @@ void Enemy::preFire() {
 
 		// 弾を生成し、初期化
 		EnemyBullet* newBullet = new EnemyBullet();
-		newBullet->Initialize(modelbullet_, moveBullet, velocity,BulletType::Bom);
+		newBullet->Initialize(modelbullet_, moveBullet, velocity, BulletType::Bom);
 
 		// ターゲット（プレイヤー）を追尾するように設定
 		newBullet->SetTarget(player_);
@@ -124,17 +122,20 @@ void Enemy::preFire() {
 		bullets_.push_back(newBullet);
 
 		// 発射タイマーリセット
-		spawnTimer = kFireInterval;
+		spawnTimer = kFireInterval2;
 	}
 }
 
 // 攻撃パターンの実装
 void Enemy::AttackPattern() {
 	if (hp > 1500) {
-		EnhancedFire(); // 1500 ~ 1000 の攻撃
-	} else if (hp > 1000) {
 		NormalFire(); // 2000 ~ 1500 の攻撃
+		Fire();
+	} else if (hp > 1000) {
+		EnhancedFire(); // 1500 ~ 1000 の攻撃
+		Fire();
 	} else if (hp > 500) {
+		Fire();
 		BombFire(); // 1000 ~ 500 の攻撃
 	} else {
 		FinalFire(); // 500 ~ 0 の攻撃
@@ -150,9 +151,9 @@ void Enemy::NormalFire() {
 void Enemy::EnhancedFire() {
 	assert(player_);
 
-	spawnTimer--;
+	AtkBulletspawnTimer--;
 
-	if (spawnTimer < -0.0f) {
+	if (AtkBulletspawnTimer < -0.0f) {
 
 		Vector3 moveBullet = worldtransfrom_.translation_;
 
@@ -178,32 +179,123 @@ void Enemy::EnhancedFire() {
 		bullets_.push_back(newBullet);
 
 		// 発射タイマーリセット
-		spawnTimer = kFireInterval;
+		AtkBulletspawnTimer = 50;
 	}
 }
 // ボム攻撃
 void Enemy::BombFire() {
-	// 大きな爆発を伴う攻撃
-	for (int i = 0; i < 5; i++) {
-		Vector3 offset = {std::sin(i * 0.5f), 0.0f, std::cos(i * 0.5f)}; // 円形に弾を展開
-		Vector3 bulletPos = worldtransfrom_.translation_ + offset;
-		Vector3 velocity = offset * 0.02f; // 外側に拡がる速度
-		EnemyBullet* newBullet = new EnemyBullet();
-		newBullet->Initialize(modelbullet_, bulletPos, velocity,BulletType::Atk);
-		bullets_.push_back(newBullet);
+	assert(player_);
+
+	spawnTimer--;
+
+	if (spawnTimer < -0.0f) {
+
+		// 弾の発射位置（敵の中心）
+		Vector3 moveBullet = worldtransfrom_.translation_;
+
+		// 弾の初期速度
+		const float kBulletSpeed = 0.005f;
+
+		// 円の半径を設定する
+		const float radius = 15.0f; // 半径5.0で大きく円を描く
+
+		// 弾を円周上に2個ずつ展開する処理
+		for (int i = 0; i < 2; i++) {
+			// 弾の角度を設定 (180度間隔で展開)
+			float angle = i * 3.14159f; // 2つの弾が180度の間隔で展開
+
+			// 弾の速度を円を描くように設定
+			Vector3 velocity = {
+			    std::cos(angle) * radius, // X軸方向の速度
+			    0.0f,                     // Y軸方向はそのまま
+			    std::sin(angle) * radius  // Z軸方向の速度
+			};
+
+			// 速度ベクトルを正規化して速度を調整
+			velocity = Normalize(velocity) * kBulletSpeed;
+
+			// 弾を生成し、初期化
+			EnemyBullet* newBullet = new EnemyBullet();
+			newBullet->Initialize(atkbullet_, moveBullet, velocity, BulletType::Atk);
+
+			// ターゲット（プレイヤー）を追尾するように設定
+			newBullet->SetTarget(player_);
+
+			// 弾をリストに追加
+			bullets_.push_back(newBullet);
+		}
+
+		// 発射タイマーリセット
+		spawnTimer = kFireInterval;
 	}
 }
 
 // 最終攻撃
 void Enemy::FinalFire() {
-	// 全力の攻撃を行う
-	for (int i = 0; i < 10; i++) {
-		Vector3 offset = {std::sin(i * 0.2f), 0.0f, std::cos(i * 0.2f)};
-		Vector3 bulletPos = worldtransfrom_.translation_ + offset;
-		Vector3 velocity = offset * 0.05f; // 広範囲に散らばる弾
-		EnemyBullet* newBullet = new EnemyBullet();
-		newBullet->Initialize(modelbullet_, bulletPos, velocity,BulletType::Atk);
-		bullets_.push_back(newBullet);
+	assert(player_);
+	spawnTimer--;
+
+	// 弾の発射タイミングを管理するためのカウンター
+	static int bulletIndex = 0;
+	static int bulletSpawnCounter = 0; // 弾の発射間隔を制御するカウンター
+	const int bulletSpawnInterval = 5; // 8フレームごとに1発発射
+
+	// 渦巻きの半径増加速度と初期角度
+	static float angle = 30.0f;          // 弾が回転する角度
+	const float angleIncrement = 20.0f;  // 角度の増加量を大きくして、弾を散らばらせる
+	const float radiusIncrement = 10.0f; // 半径の増加量を大きくしてさらに広がるように設定
+
+	// 全弾発射完了までの処理
+	if (bulletSpawnCounter <= 0) {
+		// 渦巻きの弾発射処理（15発を順番に発射）
+		if (bulletIndex < 30) {
+			// 弾の発射位置（敵の中心）
+			Vector3 moveBullet = worldtransfrom_.translation_; // 敵の中心に固定
+
+			// 弾の初期速度
+			const float kBulletSpeed = 0.01f; // 弾の速度を少し早めに設定
+
+			// 渦巻きを描くための角度と半径の増加
+			float currentAngle = angle + bulletIndex * 2.0f * 3.14159f / 15.0f; // 15等分された角度
+			float currentRadius = radiusIncrement * (bulletIndex + 1);          // 半径は弾ごとに大きく広がっていく
+
+			// 速度を渦巻き状に設定（弾は敵の中心から放たれる）
+			Vector3 velocity = {
+			    std::cos(currentAngle) * currentRadius * kBulletSpeed, // X軸方向の速度
+			    0.0f,                                                  // Y軸方向は一定
+			    std::sin(currentAngle) * currentRadius * kBulletSpeed  // Z軸方向の速度
+			};
+
+			// 弾を生成し、初期化（弾の発射位置は敵の中心）
+			EnemyBullet* newBullet = new EnemyBullet();
+			newBullet->Initialize(atkbullet_, moveBullet, velocity, BulletType::Atk);
+
+			// ターゲット設定は不要（プレイヤー追従しないため）
+			newBullet->SetTarget(player_);
+
+			// 弾をリストに追加
+			bullets_.push_back(newBullet);
+
+			// 次の弾の発射に向けてインデックスを更新
+			bulletIndex++;
+
+			// 次の弾の発射タイミングを設定
+			bulletSpawnCounter = bulletSpawnInterval;
+		}
+	}
+
+	// カウンターをデクリメント
+	if (bulletSpawnCounter > 0) {
+		bulletSpawnCounter--;
+	}
+
+	// 全弾発射が完了したらリセットしてFireを呼び出す
+	if (bulletIndex >= 15) {
+		bulletIndex = 0;         // インデックスをリセット
+		angle += angleIncrement; // 次の発射に向けて角度を更新
+
+		// ここで Fire() を呼び出す
+		Fire();
 	}
 }
 

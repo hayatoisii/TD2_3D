@@ -44,7 +44,8 @@ public:
 	void OnCollision();
 
 	// 発射間隔
-	static const int kFireInterval = 200;
+	static const int kFireInterval = 250;
+	static const int kFireInterval2 = 200;
 
 	// 弾リストを取得
 	const std::list<EnemyBullet*>& GetBullets() const { return bullets_; }
@@ -64,6 +65,7 @@ private:
 
 	// 発射タイマー
 	int32_t spawnTimer = 0;
+	int32_t AtkBulletspawnTimer = 0;
 	int hp = 2000;
 
 	bool isDamage_ = false;
@@ -88,4 +90,6 @@ private:
 	const float safeAreaRadius = 1.0f;                 // 安全エリアの半径
 
 	int FireTimer_ = 0;
+	
+	
 };

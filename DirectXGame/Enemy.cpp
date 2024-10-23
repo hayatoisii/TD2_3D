@@ -23,6 +23,8 @@ void Enemy::Initialize(Model* model, ViewProjection* camera, const Vector3& pos)
 	worldtransfrom_.translation_ = pos;
 	worldtransfrom_.Initialize();
 	input_ = Input::GetInstance();
+	velocity_ = {0, -kWalkSpeed, 0};
+	walkTimer = 0.0f;
 }
 
 Vector3 Enemy::GetWorldPosition() {

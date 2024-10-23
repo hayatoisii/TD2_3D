@@ -134,7 +134,7 @@ private: // メンバ変数
 
 	// 終了フラグ
 	bool finished_ = false;
-	bool Clear_ = true;
+	bool Clear_ = false;
 	// デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
 	// BGMが再生されているかを追跡

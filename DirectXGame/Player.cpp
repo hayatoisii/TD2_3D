@@ -228,6 +228,30 @@ void Player::Update2() {
 
 void Player::Update3() { worldtransfrom_.UpdateMatrix(); }
 
+
+void Player::ClearUpdate() {
+
+	// 回転角度（時間経過に応じて増加）
+	static float angle = 0.0f;
+	const float radius = 2.9f; // プレイヤーの回転半径
+	const float speed = 0.01f; // 回転速度
+
+	// Z軸を中心に円を描くようにプレイヤー位置を更新
+	worldtransfrom_.translation_.x = radius * cos(angle);         // X座標を更新
+	worldtransfrom_.translation_.y = radius * sin(angle) - 0.5f;  // Y座標は固定
+	worldtransfrom_.translation_.z = radius * sin(angle) - 36.5f; // Z座標を更新
+	worldtransfrom_.rotation_.y += 0.03f;
+	worldtransfrom_.rotation_.x += 0.02f;
+
+	angle += speed;
+	if (angle >= 2 * static_cast<float>(3.14f)) {
+		angle -= 2 * static_cast<float>(3.14f);
+	}
+
+	worldtransfrom_.UpdateMatrix();
+}
+
+
 void Player::HpDraw() {
 	// HP描画
 	if (hp == 500) {

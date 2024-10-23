@@ -27,6 +27,8 @@ void Enemy::Initialize(Model* model, ViewProjection* camera, const Vector3& pos)
 	deathParticles_ = new DeathParticles;
 	deathParticlesModel_ = Model::CreateFromOBJ("deathParticle", true); // 3Dモデルの生成
 	deathParticles_->Initialize(initialPosition_, deathParticlesModel_, camera);
+	velocity_ = {0, -kWalkSpeed, 0};
+	walkTimer = 0.0f;
 }
 
 Vector3 Enemy::GetWorldPosition() {
@@ -360,6 +362,20 @@ void Enemy::Update() {
 	//ImGui::Text("EnemyHP:%d", enemyhp);
 	/*ImGui::Text("FireTimer:%d", FireTimer_);*/
 }
+
+void Enemy::DeathEnemyUpdate() {
+
+	worldtransfrom_.translation_.y += velocity_.y;
+	walkTimer += 1.0f / 60.0f;
+
+	float parm = std::sin(std::numbers::pi_v<float> * 2.0f * walkTimer / kWalkMotionTime);
+	float radian = kWalkMotionAngleStart + kWalkMontionAngleEnd * (parm + 1.0f) / 2.0f;
+	worldtransfrom_.rotation_.z = radian;
+
+	worldtransfrom_.UpdateMatrix();
+}
+
+void Enemy::fallingUpdate() { worldtransfrom_.UpdateMatrix(); }
 
 bool Enemy::ShouldTransitionPhase() const {
 	if (isDead_ && (clock() >= clearStartTime_ + 1000)) {

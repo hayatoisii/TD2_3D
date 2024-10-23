@@ -49,6 +49,8 @@ public:
 
 	void Update3();
 
+	void ClearUpdate();
+
 	void HpDraw();
 
 	WorldTransform worldtransfrom_;

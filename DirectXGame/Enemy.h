@@ -9,6 +9,7 @@
 #include <ViewProjection.h>
 #include <WorldTransform.h>
 #include <cassert>
+#include <DeathParticles.h>
 
 class Player;
 
@@ -97,5 +98,9 @@ private:
 	uint32_t HpHandle_ = 0;
 	//敵HP
 	int enemyhp = 2000;
+
+	// デスパーティクル
+	DeathParticles* deathParticles_ = nullptr;
+	Model* deathParticlesModel_ = nullptr;
 	
 };

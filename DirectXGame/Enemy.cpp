@@ -22,6 +22,11 @@ void Enemy::Initialize(Model* model, ViewProjection* camera, const Vector3& pos)
 	worldtransfrom_.translation_ = pos;
 	worldtransfrom_.Initialize();
 	input_ = Input::GetInstance();
+
+	// DeathParticles
+	deathParticles_ = new DeathParticles;
+	deathParticlesModel_ = Model::CreateFromOBJ("deathParticle", true); // 3Dモデルの生成
+	deathParticles_->Initialize(initialPosition_, deathParticlesModel_, camera);
 }
 
 Vector3 Enemy::GetWorldPosition() {
@@ -40,7 +45,7 @@ void Enemy::OnCollision() {
 	isDamage_ = true;
 
 	if (isDamage_ == true) {
-		enemyhp -= 100;
+		enemyhp -= 1000;
 	}
 
 	if (enemyhp <= 0) {
@@ -322,6 +327,7 @@ void Enemy::Update() {
 	// 点滅の更新
 	if (isBlinking_) {
 		blinkTimer_--;
+		deathParticles_->Update();
 		if (blinkTimer_ <= 0) {
 			isBlinking_ = false;
 			isClear_ = true; // 点滅が終了したら敵をクリア状態にする
@@ -356,7 +362,7 @@ void Enemy::Update() {
 }
 
 bool Enemy::ShouldTransitionPhase() const {
-	if (isDead_ && (clock() >= clearStartTime_ + 2000)) {
+	if (isDead_ && (clock() >= clearStartTime_ + 1000)) {
 		// 点滅終了後、2秒経過した場合にシーン遷移を許可
 		return true;
 	}
@@ -371,6 +377,9 @@ void Enemy::Draw() {
 		if (!isBlinking_ || (blinkTimer_ / 5) % 2 == 0) {
 			model_->Draw(worldtransfrom_, *camera_);
 		}
+	}
+	if (enemyhp == 0) {
+		deathParticles_->Draw();
 	}
 
 	for (EnemyBullet* bullet : bullets_) {

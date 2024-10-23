@@ -2,6 +2,7 @@
 #include "EnemyBullet.h"
 #include "MyMath.h"
 #include "Player.h"
+#include "DeathParticles.h"
 
 #include <Model.h>
 #include <Sprite.h>
@@ -55,6 +56,7 @@ public:
 
 private:
 	WorldTransform worldtransfrom_;
+	ViewProjection viewProjection_;
 	Model* model_ = nullptr;
 	ViewProjection* camera_ = nullptr;
 	Input* input_ = nullptr;
@@ -95,4 +97,8 @@ private:
 	
 	Sprite* HpSprite_ = nullptr;
 	uint32_t HpHandle_ = 0;
+
+	// デスパーティクル
+	DeathParticles* deathParticles_ = nullptr;
+	Model* deathParticlesModel_ = nullptr;
 };

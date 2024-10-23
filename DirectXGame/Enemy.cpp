@@ -11,6 +11,8 @@ Enemy::~Enemy() {
 	for (EnemyBullet* bullet : bullets_) {
 		delete bullet;
 	}
+	delete deathParticles_;
+	delete deathParticlesModel_;
 }
 
 void Enemy::Initialize(Model* model, ViewProjection* camera, const Vector3& pos) {
@@ -22,6 +24,11 @@ void Enemy::Initialize(Model* model, ViewProjection* camera, const Vector3& pos)
 	worldtransfrom_.translation_ = pos;
 	worldtransfrom_.Initialize();
 	input_ = Input::GetInstance();
+
+	// DeathParticles
+	deathParticles_ = new DeathParticles;
+	deathParticlesModel_ = Model::CreateFromOBJ("deathParticle", true); // 3Dモデルの生成
+	deathParticles_->Initialize(initialPosition_, deathParticlesModel_, camera);
 
 	// テクスチャロード
 	HpHandle_ = TextureManager::Load("/EnemyHp/EnemyHUD.png");
@@ -46,7 +53,7 @@ void Enemy::OnCollision() {
 	isDamage_ = true;
 
 	if (isDamage_ == true) {
-		hp -= 100;
+		hp -= 1000;
 	}
 
 	if (hp <= 0) {
@@ -329,6 +336,7 @@ void Enemy::Update() {
 	// 点滅の更新
 	if (isBlinking_) {
 		blinkTimer_--;
+		deathParticles_->Update();
 		if (blinkTimer_ <= 0) {
 			isBlinking_ = false;
 			isClear_ = true; // 点滅が終了したら敵をクリア状態にする
@@ -374,10 +382,15 @@ void Enemy::Draw() {
 	// コマンドリストの取得
 
 	if (!isClear_) {
+
 		// 点滅中はフレームごとに描画するかどうかを切り替える
 		if (!isBlinking_ || (blinkTimer_ / 5) % 2 == 0) {
 			model_->Draw(worldtransfrom_, *camera_);
 		}
+	}
+	if (hp==0) {
+		deathParticles_->Draw();
+
 	}
 
 	for (EnemyBullet* bullet : bullets_) {

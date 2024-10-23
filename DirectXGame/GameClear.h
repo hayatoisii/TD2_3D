@@ -9,6 +9,7 @@
 #include "WorldTransform.h"
 #include "SkyDome.h"
 #include "Player.h"
+#include "Enemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -46,6 +47,9 @@ public: // メンバ関数
 	Player* player_ = nullptr;
 	Player* secondPlayer_ = nullptr;
 	Player* earth_ = nullptr;
+	Enemy* enemydeath_ = nullptr;
+	Enemy* enemybatu_ = nullptr;
+	Enemy* enemyfalling_ = nullptr;
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -56,10 +60,14 @@ private: // メンバ変数
 
 	Vector3 playerPos = {};
 	Vector3 earthPos = {};
+	Vector3 enemyPos = {};
 	Model* modelPlayer_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 	Model* modelClear_ = nullptr;
 	Model* modelearth_ = nullptr;
+	Model* modelEnemy_ = nullptr;
+	Model* modelbatu_ = nullptr;
+	Model* modelfalling_ = nullptr;
 
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;

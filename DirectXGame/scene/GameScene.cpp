@@ -122,8 +122,9 @@ void GameScene::Update() {
 	Vector2 AttackBarPos = AttackBarSprite_->GetPosition();
 
 	//チュートリアルスキップ
-	if (input_->TriggerKey(DIK_RETURN)) { // スペースキーが押されたら
+	if (!isReturnPressed && input_->TriggerKey(DIK_RETURN)) { // リターンキーが押されて、かつまだ押されていない状態なら
 		Timer_ = 1600;
+		isReturnPressed = true; // 一度押されたらフラグを立てる
 	}
 
 	//プレイヤー回転
@@ -134,7 +135,7 @@ void GameScene::Update() {
 	// ディレイ中かどうかをチェック
 	if (delayStarted) {
 		// 3秒が経過したかをチェック
-		if (clock() >= start_time + 3000) { // 3秒 (3000ミリ秒) 経過後
+		if (clock() >= start_time + 5000) { // 3秒 (3000ミリ秒) 経過後
 			Drawflg = false;                // 描画フラグをfalseにする
 			delayStarted = false;           // ディレイ終了
 		}
@@ -172,11 +173,11 @@ void GameScene::Update() {
 	ChangePhease();
 
 	// imGui
-	ImGui::Begin("debug");
-	ImGui::Text("IsDebugCamera: %d", isDebugCameraActive_); // シーン名を表示
-	ImGui::Text("Timer: %d", Timer_); // シーン名を表示
-	// ImGui::Text("IsRotate: %f", skydomeRotate); // シーン名を表示
-	ImGui::End();
+	//ImGui::Begin("debug");
+	//ImGui::Text("IsDebugCamera: %d", isDebugCameraActive_); // シーン名を表示
+	//ImGui::Text("Timer: %d", Timer_); // シーン名を表示
+	//// ImGui::Text("IsRotate: %f", skydomeRotate); // シーン名を表示
+	//ImGui::End();
 }
 
 void GameScene::Draw() {

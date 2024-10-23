@@ -1,4 +1,6 @@
 #include "EnemyBullet.h"
+//#include "Enemy.h"
+
 #include <algorithm>
 #include <cassert>
 
@@ -102,7 +104,10 @@ void EnemyBullet::Update() {
 
 }
 
-void EnemyBullet::OnCollision() { isDead_ = true; }
+void EnemyBullet::OnCollision() { isDead_ = true;
+
+
+}
 
 void EnemyBullet::Draw(const ViewProjection& camera) {
 

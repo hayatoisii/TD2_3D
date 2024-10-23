@@ -40,10 +40,10 @@ void Enemy::OnCollision() {
 	isDamage_ = true;
 
 	if (isDamage_ == true) {
-		hp -= 100;
+		enemyhp -= 100;
 	}
 
-	if (hp <= 0) {
+	if (enemyhp <= 0) {
 		isDead_ = true;
 		isBlinking_ = true;           // 点滅を開始する
 		blinkTimer_ = kBlinkDuration; // 点滅時間を設定
@@ -128,13 +128,13 @@ void Enemy::preFire() {
 
 // 攻撃パターンの実装
 void Enemy::AttackPattern() {
-	if (hp > 1500) {
+	if (enemyhp > 1500) {
 		NormalFire(); // 2000 ~ 1500 の攻撃
 		Fire();
-	} else if (hp > 1000) {
+	} else if (enemyhp > 1000) {
 		EnhancedFire(); // 1500 ~ 1000 の攻撃
 		Fire();
-	} else if (hp > 500) {
+	} else if (enemyhp > 500) {
 		Fire();
 		BombFire(); // 1000 ~ 500 の攻撃
 	} else {
@@ -238,7 +238,7 @@ void Enemy::FinalFire() {
 	// 弾の発射タイミングを管理するためのカウンター
 	static int bulletIndex = 0;
 	static int bulletSpawnCounter = 0; // 弾の発射間隔を制御するカウンター
-	const int bulletSpawnInterval = 5; // 8フレームごとに1発発射
+	const int bulletSpawnInterval = 7; // 8フレームごとに1発発射
 
 	// 渦巻きの半径増加速度と初期角度
 	static float angle = 30.0f;          // 弾が回転する角度
@@ -248,7 +248,7 @@ void Enemy::FinalFire() {
 	// 全弾発射完了までの処理
 	if (bulletSpawnCounter <= 0) {
 		// 渦巻きの弾発射処理（15発を順番に発射）
-		if (bulletIndex < 30) {
+		if (bulletIndex < 15) {
 			// 弾の発射位置（敵の中心）
 			Vector3 moveBullet = worldtransfrom_.translation_; // 敵の中心に固定
 
@@ -352,8 +352,8 @@ void Enemy::Update() {
 
 	worldtransfrom_.UpdateMatrix();
 
-	ImGui::Text("EnemyHP:%d", hp);
-	ImGui::Text("FireTimer:%d", FireTimer_);
+	ImGui::Text("EnemyHP:%d", enemyhp);
+	/*ImGui::Text("FireTimer:%d", FireTimer_);*/
 }
 
 bool Enemy::ShouldTransitionPhase() const {
@@ -375,6 +375,12 @@ void Enemy::Draw() {
 	}
 
 	for (EnemyBullet* bullet : bullets_) {
-		bullet->Draw(*camera_);
+		if (enemyhp > 0) {
+			// HPが0以上のときのみ弾丸を描画
+			bullet->Draw(*camera_);
+		} else {
+			spawnTimer++;
+			break; // HPが0なので処理を打ち切る
+		}
 	}
 }

@@ -26,7 +26,7 @@ void Player::Initialize(Model* model, ViewProjection* camera, const Vector3& pos
 	DmgAudio_ = Audio::GetInstance();
 	
 	ParryAudioHandle_ = PryAudio_->LoadWave("./sound/parry.wav");
-	DamageAudioHandle_ = DmgAudio_->LoadWave("./sound/damage.wav");
+	DamageAudioHandle_ = DmgAudio_->LoadWave("./sound/ .wav");
 }
 
 void Player::OnCollision() {

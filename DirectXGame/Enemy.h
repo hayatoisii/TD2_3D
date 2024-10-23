@@ -52,6 +52,7 @@ public:
 
 	bool IsClear() const { return isDead_; }
 
+	bool EnemyDead = false;
 private:
 	WorldTransform worldtransfrom_;
 	Model* model_ = nullptr;
@@ -67,7 +68,6 @@ private:
 	int32_t spawnTimer = 0;
 	int32_t AtkBulletspawnTimer = 0;
 	int32_t BomBulletspawnTimer = 0;
-	int hp = 2000;
 
 	bool isDamage_ = false;
 	bool isDead_ = false;
@@ -91,6 +91,8 @@ private:
 	const float safeAreaRadius = 1.0f;                 // 安全エリアの半径
 
 	int FireTimer_ = 0;
-	
+
+	//敵HP
+	int enemyhp = 2000;
 	
 };

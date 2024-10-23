@@ -143,6 +143,9 @@ private: // メンバ変数
 	bool Drawflg = false;
 	// ディレイが開始されたかどうかを管理
 	bool delayStarted = false;
+	// リターンキーが押されたかを管理するフラグ
+	bool isReturnPressed = false; 
+
 	// 時間計測用の変数を追加
 	clock_t start_time = 0; // スペースキーが押された時の時間を記録
 

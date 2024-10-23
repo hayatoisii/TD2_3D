@@ -66,6 +66,7 @@ private:
 	// 発射タイマー
 	int32_t spawnTimer = 0;
 	int32_t AtkBulletspawnTimer = 0;
+	int32_t BomBulletspawnTimer = 0;
 	int hp = 2000;
 
 	bool isDamage_ = false;

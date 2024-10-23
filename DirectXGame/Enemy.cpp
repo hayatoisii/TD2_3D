@@ -179,16 +179,16 @@ void Enemy::EnhancedFire() {
 		bullets_.push_back(newBullet);
 
 		// 発射タイマーリセット
-		AtkBulletspawnTimer = 50;
+		AtkBulletspawnTimer = 70;
 	}
 }
 // ボム攻撃
 void Enemy::BombFire() {
 	assert(player_);
 
-	spawnTimer--;
+	BomBulletspawnTimer--;
 
-	if (spawnTimer < -0.0f) {
+	if (BomBulletspawnTimer < -0.0f) {
 
 		// 弾の発射位置（敵の中心）
 		Vector3 moveBullet = worldtransfrom_.translation_;
@@ -226,7 +226,7 @@ void Enemy::BombFire() {
 		}
 
 		// 発射タイマーリセット
-		spawnTimer = kFireInterval;
+		BomBulletspawnTimer = 110;
 	}
 }
 

@@ -40,19 +40,44 @@ AABB EnemyBullet::GetAABB() {
 }
 
 void EnemyBullet::Update() {
-	// 弾の寿命を減らす
-	if (--deathTimer_ <= 0) {
-		isDead_ = true;
-		return;
-	}
+	if (isActive) {
 
-	if (!player_)
-		return;
+		// 弾の寿命を減らす
+		if (--deathTimer_ <= 0) {
+			isDead_ = true;
+			return;
+		}
 
-	 switch (bulletType_) {
-	case BulletType::Bom:
-		// Bom用の縦回転などの処理
-		{
+		if (!player_)
+			return;
+
+		switch (bulletType_) {
+		case BulletType::Bom:
+			// Bom用の縦回転などの処理
+			{
+
+				// 弾の現在位置とプレイヤーの位置を取得
+				Vector3 bulletPosition = GetWorldPosition();
+				Vector3 playerPosition = player_->GetWorldPosition();
+
+				// プレイヤーへのベクトルを計算
+				Vector3 toPlayer = Normalize(playerPosition - bulletPosition);
+
+				// 現在の進行方向を少しずつプレイヤー方向に補正
+				float adjustmentFactor = 0.045f; // 補正の割合。値を調整することで追尾の滑らかさを変更
+				velocity_ = Normalize(velocity_ + toPlayer * adjustmentFactor);
+
+				// 速度に基づいて弾の位置を更新
+				worldtransfrom_.translation_.x += velocity_.x * 0.9f;
+				worldtransfrom_.translation_.y += velocity_.y * 0.9f;
+				worldtransfrom_.translation_.z += velocity_.z * 0.9f;
+
+				// ワールド行列を更新
+				worldtransfrom_.UpdateMatrix();
+			}
+			break;
+
+		case BulletType::Atk:
 
 			// 弾の現在位置とプレイヤーの位置を取得
 			Vector3 bulletPosition = GetWorldPosition();
@@ -62,46 +87,27 @@ void EnemyBullet::Update() {
 			Vector3 toPlayer = Normalize(playerPosition - bulletPosition);
 
 			// 現在の進行方向を少しずつプレイヤー方向に補正
-			float adjustmentFactor = 0.045f; // 補正の割合。値を調整することで追尾の滑らかさを変更
+			float adjustmentFactor = 0.025f; // 補正の割合。値を調整することで追尾の滑らかさを変更
 			velocity_ = Normalize(velocity_ + toPlayer * adjustmentFactor);
 
-			// 速度に基づいて弾の位置を更新
-			worldtransfrom_.translation_.x += velocity_.x * 0.9f;
-			worldtransfrom_.translation_.y += velocity_.y * 0.9f;
-			worldtransfrom_.translation_.z += velocity_.z * 0.9f;
+			// 回転角度を少しずつ増加
+			float rotationSpeed = 0.5f;                   // 回転速度
+			worldtransfrom_.rotation_.y += rotationSpeed; // Y方向に回転を加える
+
+			// 速度に基づいて弾の位置を更新（速度をゆっくりに調整）
+			float movementSpeed = 0.5f; // 移動速度の調整
+			worldtransfrom_.translation_.x += velocity_.x * movementSpeed;
+			worldtransfrom_.translation_.y += velocity_.y * movementSpeed;
+			worldtransfrom_.translation_.z += velocity_.z * movementSpeed;
 
 			// ワールド行列を更新
 			worldtransfrom_.UpdateMatrix();
 		}
-		break;
-
-	case BulletType::Atk:
-
-		// 弾の現在位置とプレイヤーの位置を取得
-		Vector3 bulletPosition = GetWorldPosition();
-		Vector3 playerPosition = player_->GetWorldPosition();
-
-		// プレイヤーへのベクトルを計算
-		Vector3 toPlayer = Normalize(playerPosition - bulletPosition);
-
-		// 現在の進行方向を少しずつプレイヤー方向に補正
-		float adjustmentFactor = 0.025f; // 補正の割合。値を調整することで追尾の滑らかさを変更
-		velocity_ = Normalize(velocity_ + toPlayer * adjustmentFactor);
-
-		// 回転角度を少しずつ増加
-		float rotationSpeed = 0.5f;                  // 回転速度
-		worldtransfrom_.rotation_.y += rotationSpeed; // Y方向に回転を加える
-
-		// 速度に基づいて弾の位置を更新（速度をゆっくりに調整）
-		float movementSpeed = 0.5f; // 移動速度の調整
-		worldtransfrom_.translation_.x += velocity_.x * movementSpeed;
-		worldtransfrom_.translation_.y += velocity_.y * movementSpeed;
-		worldtransfrom_.translation_.z += velocity_.z * movementSpeed;
-
-		// ワールド行列を更新
-		worldtransfrom_.UpdateMatrix();
 	}
+}
 
+void EnemyBullet::Deactivate() {
+	isActive = false; // 無効化
 }
 
 void EnemyBullet::OnCollision() { isDead_ = true;

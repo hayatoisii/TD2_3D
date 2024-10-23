@@ -231,7 +231,7 @@ void GameScene::Draw() {
 	/// </summary>
 	///
 	// if (input_->PushKey(DIK_C)) {
-	
+	player_->HpDraw();
 	//命描画
 	if (Timer_ >= 0 && Timer_ <= 740) {
 		float progress = std::clamp(Timer_ / 60.0f, 0.0f, 1.0f);
@@ -342,6 +342,7 @@ void GameScene::Draw() {
 		preSprite0->SetPosition(position);
 		preSprite0->SetSize(size);
 		preSprite0->Draw();
+	
 	}
 
 

@@ -12,10 +12,13 @@ enum class BulletType {
 
 class EnemyBullet {
 public:
+	bool isActive = true; // 初期状態はアクティブ
 	BulletType bulletType_;
 	void Initialize(Model* model, const Vector3& position, const Vector3& velocity, BulletType type);
 
 	void Update();
+
+	void Deactivate();
 
 	void Draw(const ViewProjection& camera);
 

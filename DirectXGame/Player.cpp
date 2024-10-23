@@ -24,9 +24,23 @@ void Player::Initialize(Model* model, ViewProjection* camera, const Vector3& pos
 	input_ = Input::GetInstance();
 	PryAudio_ = Audio::GetInstance();
 	DmgAudio_ = Audio::GetInstance();
-	
+
 	ParryAudioHandle_ = PryAudio_->LoadWave("./sound/parry.wav");
-	DamageAudioHandle_ = DmgAudio_->LoadWave("./sound/ .wav");
+	DamageAudioHandle_ = DmgAudio_->LoadWave("./sound/damage.wav");
+
+	// テクスチャロード
+	HpHandle1_ = TextureManager::Load("/PlayerHp/1HUD.png");
+	HpHandle2_ = TextureManager::Load("/PlayerHp/2HUD.png");
+	HpHandle3_ = TextureManager::Load("/PlayerHp/3HUD.png");
+	HpHandle4_ = TextureManager::Load("/PlayerHp/4HUD.png");
+	HpHandle5_ = TextureManager::Load("/PlayerHp/5HUD.png");
+
+	// スプライト生成
+	HpSprite1_ = Sprite::Create(HpHandle1_, {0, 0});
+	HpSprite2_ = Sprite::Create(HpHandle2_, {0, 0});
+	HpSprite3_ = Sprite::Create(HpHandle3_, {0, 0});
+	HpSprite4_ = Sprite::Create(HpHandle4_, {0, 0});
+	HpSprite5_ = Sprite::Create(HpHandle5_, {0, 0});
 }
 
 void Player::OnCollision() {
@@ -34,22 +48,21 @@ void Player::OnCollision() {
 
 	if (isDamage_ == true && !isParry_) {
 		hp -= Damage;
-		DmgAudio_->playAudio(DamageAudio_, DamageAudioHandle_,false,0.7f);
+		DmgAudio_->playAudio(DamageAudio_, DamageAudioHandle_, false, 0.7f);
 		// 点滅を開始する
 		isBlinking_ = true;
 		blinkTimer_ = kBlinkDuration;
-
-		
 	}
 
-	if (hp<=0) {
+	if (hp <= 0) {
 		isDead_ = true;
 	}
 }
 
-void Player::Parry() { isParry_ = true;
+void Player::Parry() {
+	isParry_ = true;
 	if (isParry_) {
-		PryAudio_->playAudio(ParryAudio_, ParryAudioHandle_,false,0.7f);
+		PryAudio_->playAudio(ParryAudio_, ParryAudioHandle_, false, 0.7f);
 	}
 }
 
@@ -180,12 +193,10 @@ void Player::Update() {
 		}
 	}
 
-
 	/*ImGui::Begin("Setmove");
 	ImGui::SliderFloat("Move X", &worldtransfrom_.translation_.x, -1.0f, 1.0f);
 	ImGui::SliderFloat("Move Y", &worldtransfrom_.translation_.y, -1.0f, 1.0f);
 	ImGui::End();*/
-	
 
 	ImGui::Text("PlayerHP:%d", hp);
 	worldtransfrom_.UpdateMatrix();
@@ -215,11 +226,31 @@ void Player::Update2() {
 
 void Player::Update3() { worldtransfrom_.UpdateMatrix(); }
 
+void Player::HpDraw() {
+	// HP描画
+	if (hp == 500) {
+		HpSprite5_->Draw();
+	}
+	if (hp == 400) {
+		HpSprite4_->Draw();
+	}
+	if (hp == 300) {
+		HpSprite3_->Draw();
+	}
+	if (hp == 200) {
+		HpSprite2_->Draw();
+	}
+	if (hp == 100) {
+		HpSprite1_->Draw();
+	}
+}
+
 void Player::Draw() {
 	if (!isDead_) {
 		// 点滅中はフレームごとに描画するかどうかを切り替える
 		if (!isBlinking_ || (blinkTimer_ / (kBlinkDuration / 10)) % 2 == 0) {
 			model_->Draw(worldtransfrom_, *camera_);
+		
 		}
 	}
 

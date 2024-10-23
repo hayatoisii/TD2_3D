@@ -9,6 +9,7 @@
 #include <list>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "Sprite.h"
 
 class Enemy;
 
@@ -48,6 +49,8 @@ public:
 
 	void Update3();
 
+	void HpDraw();
+
 	WorldTransform worldtransfrom_;
 
 private:
@@ -75,7 +78,7 @@ private:
 	bool isParry_ = false;
 	bool isDamage_ = false;
 
-	int Damage = 50;
+	int Damage = 100;
 
 	Enemy* enemy_ = nullptr;
 
@@ -87,5 +90,20 @@ private:
 	// 点滅関連の変数
 	static const int kBlinkDuration = 60; // 点滅の継続時間 (1秒間のフレーム数)
 	bool isBlinking_ = false;             // 点滅中かどうかのフラグ
-	int blinkTimer_ = 0;                  // 点滅のためのタイマー
+	int blinkTimer_ = 0;     
+	// 点滅のためのタイマー
+
+
+	// プレイヤーHP
+	Sprite* HpSprite1_ = nullptr;
+	Sprite* HpSprite2_ = nullptr;
+	Sprite* HpSprite3_ = nullptr;
+	Sprite* HpSprite4_ = nullptr;
+	Sprite* HpSprite5_ = nullptr;
+
+	uint32_t HpHandle1_ = 0;
+	uint32_t HpHandle2_ = 0;
+	uint32_t HpHandle3_ = 0;
+	uint32_t HpHandle4_ = 0;
+	uint32_t HpHandle5_ = 0;
 };

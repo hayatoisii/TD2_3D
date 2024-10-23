@@ -130,7 +130,6 @@ void Enemy::preFire() {
 void Enemy::AttackPattern() {
 	if (enemyhp > 1500) {
 		NormalFire(); // 2000 ~ 1500 の攻撃
-		Fire();
 	} else if (enemyhp > 1000) {
 		EnhancedFire(); // 1500 ~ 1000 の攻撃
 		Fire();
@@ -379,7 +378,8 @@ void Enemy::Draw() {
 			// HPが0以上のときのみ弾丸を描画
 			bullet->Draw(*camera_);
 		} else {
-			spawnTimer++;
+			bullet->Deactivate();
+			
 			break; // HPが0なので処理を打ち切る
 		}
 	}

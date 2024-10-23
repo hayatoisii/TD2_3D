@@ -48,6 +48,8 @@ public:
 
 	void Update3();
 
+	void ClearUpdate();
+
 	WorldTransform worldtransfrom_;
 
 private:

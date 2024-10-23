@@ -101,4 +101,27 @@ private:
 	// デスパーティクル
 	DeathParticles* deathParticles_ = nullptr;
 	Model* deathParticlesModel_ = nullptr;
+
+	// プレイヤーHP
+	Sprite* HpSprite1_ = nullptr;
+	Sprite* HpSprite2_ = nullptr;
+	Sprite* HpSprite3_ = nullptr;
+	Sprite* HpSprite4_ = nullptr;
+	Sprite* HpSprite5_ = nullptr;
+	Sprite* HpSprite6_ = nullptr;
+	Sprite* HpSprite7_ = nullptr;
+	Sprite* HpSprite8_ = nullptr;
+	Sprite* HpSprite9_ = nullptr;
+	Sprite* HpSprite10_ = nullptr;
+
+	uint32_t HpHandle1_ = 0;
+	uint32_t HpHandle2_ = 0;
+	uint32_t HpHandle3_ = 0;
+	uint32_t HpHandle4_ = 0;
+	uint32_t HpHandle5_ = 0;
+	uint32_t HpHandle6_ = 0;
+	uint32_t HpHandle7_ = 0;
+	uint32_t HpHandle8_ = 0;
+	uint32_t HpHandle9_ = 0;
+	uint32_t HpHandle10_ = 0;
 };

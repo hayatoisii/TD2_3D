@@ -31,10 +31,28 @@ void Enemy::Initialize(Model* model, ViewProjection* camera, const Vector3& pos)
 	deathParticles_->Initialize(initialPosition_, deathParticlesModel_, camera);
 
 	// テクスチャロード
-	HpHandle_ = TextureManager::Load("/EnemyHp/EnemyHUD.png");
+	HpHandle1_ = TextureManager::Load("/enemyHp/1HUD.png");
+	HpHandle2_ = TextureManager::Load("/enemyHp/2HUD.png");
+	HpHandle3_ = TextureManager::Load("/enemyHp/3HUD.png");
+	HpHandle4_ = TextureManager::Load("/enemyHp/4HUD.png");
+	HpHandle5_ = TextureManager::Load("/enemyHp/5HUD.png");
+	HpHandle6_ = TextureManager::Load("/enemyHp/6HUD.png");
+	HpHandle7_ = TextureManager::Load("/enemyHp/7HUD.png");
+	HpHandle8_ = TextureManager::Load("/enemyHp/8HUD.png");
+	HpHandle9_ = TextureManager::Load("/enemyHp/9HUD.png");
+	HpHandle10_ = TextureManager::Load("/enemyHp/10HUD.png");
 
 	// スプライト生成
-	HpSprite_ = Sprite::Create(HpHandle_, { 0, 0 });
+	HpSprite1_ = Sprite::Create(HpHandle1_, { 0, 0 });
+	HpSprite2_ = Sprite::Create(HpHandle2_, { 0, 0 });
+	HpSprite3_ = Sprite::Create(HpHandle3_, { 0, 0 });
+	HpSprite4_ = Sprite::Create(HpHandle4_, { 0, 0 });
+	HpSprite5_ = Sprite::Create(HpHandle5_, { 0, 0 });
+	HpSprite6_ = Sprite::Create(HpHandle6_, { 0, 0 });
+	HpSprite7_ = Sprite::Create(HpHandle7_, { 0, 0 });
+	HpSprite8_ = Sprite::Create(HpHandle8_, { 0, 0 });
+	HpSprite9_ = Sprite::Create(HpHandle9_, { 0, 0 });
+	HpSprite10_ = Sprite::Create(HpHandle10_, { 0, 0 });
 }
 
 Vector3 Enemy::GetWorldPosition() {
@@ -53,7 +71,7 @@ void Enemy::OnCollision() {
 	isDamage_ = true;
 
 	if (isDamage_ == true) {
-		hp -= 1000;
+		hp -= 100;
 	}
 
 	if (hp <= 0) {
@@ -399,7 +417,34 @@ void Enemy::Draw() {
 }
 
 void Enemy::HpDraw() {
-	if (hp > 0) {
-		HpSprite_->Draw();
+	if (hp == 200 || hp == 0) {
+		HpSprite1_->Draw();
+	}
+	if (hp == 400 || hp == 300) {
+		HpSprite2_->Draw();
+	}
+	if (hp == 600 || hp == 500) {
+		HpSprite3_->Draw();
+	}
+	if (hp == 800 || hp == 700) {
+		HpSprite4_->Draw();
+	}
+	if (hp == 1000 || hp == 900) {
+		HpSprite5_->Draw();
+	}
+	if (hp == 1200 || hp == 1100) {
+		HpSprite6_->Draw();
+	}
+	if (hp == 1400 || hp == 1300) {
+		HpSprite7_->Draw();
+	}
+	if (hp == 1600 || hp == 1500) {
+		HpSprite8_->Draw();
+	}
+	if (hp == 1800 || hp == 1700) {
+		HpSprite9_->Draw();
+	}
+	if (hp == 2000 || hp == 1900) {
+		HpSprite10_->Draw();
 	}
 }

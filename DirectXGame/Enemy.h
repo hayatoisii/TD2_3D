@@ -92,10 +92,10 @@ private:
 
 	int FireTimer_ = 0;
 
-	//敵HP
-	int enemyhp = 2000;
 
 	Sprite* HpSprite_ = nullptr;
 	uint32_t HpHandle_ = 0;
+	//敵HP
+	int enemyhp = 2000;
 	
 };

@@ -1,5 +1,5 @@
 #include "EnemyBullet.h"
-//#include "Enemy.h"
+// #include "Enemy.h"
 
 #include <algorithm>
 #include <cassert>
@@ -110,16 +110,15 @@ void EnemyBullet::Deactivate() {
 	isActive = false; // 無効化
 }
 
-void EnemyBullet::OnCollision() { isDead_ = true;
-
-
-}
+void EnemyBullet::OnCollision() { isDead_ = true; }
 
 void EnemyBullet::Draw(const ViewProjection& camera) {
 
-	if (!isDead_) {
-		// モデルの描画
-		model_->Draw(worldtransfrom_, camera);
+	if (isActive) {
+
+		if (!isDead_ &&player_->hp > 0) {
+			// モデルの描画
+			model_->Draw(worldtransfrom_, camera);
+		}
 	}
 }
-

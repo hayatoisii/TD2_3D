@@ -1,6 +1,6 @@
 #include "Enemy.h"
 #include "Player.h"
-#include "imgui.h"
+
 
 #include <cstdlib> // rand() 関数を使うために必要
 #include <ctime>   // time() 関数を使うために必要
@@ -351,12 +351,12 @@ void Enemy::Update() {
 
 	worldtransfrom_.UpdateMatrix();
 
-	ImGui::Text("EnemyHP:%d", enemyhp);
+	//ImGui::Text("EnemyHP:%d", enemyhp);
 	/*ImGui::Text("FireTimer:%d", FireTimer_);*/
 }
 
 bool Enemy::ShouldTransitionPhase() const {
-	if (isDead_ && (clock() >= clearStartTime_ + 2200)) {
+	if (isDead_ && (clock() >= clearStartTime_ + 2000)) {
 		// 点滅終了後、2秒経過した場合にシーン遷移を許可
 		return true;
 	}
@@ -379,6 +379,7 @@ void Enemy::Draw() {
 			bullet->Draw(*camera_);
 		} else {
 			bullet->Deactivate();
+			
 			
 			break; // HPが0なので処理を打ち切る
 		}

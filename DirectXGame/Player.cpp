@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "Enemy.h"
-#include "imgui.h"
+
 #include <algorithm>
 #include <cassert>
 
@@ -24,6 +24,7 @@ void Player::Initialize(Model* model, ViewProjection* camera, const Vector3& pos
 	input_ = Input::GetInstance();
 	PryAudio_ = Audio::GetInstance();
 	DmgAudio_ = Audio::GetInstance();
+	
 
 	ParryAudioHandle_ = PryAudio_->LoadWave("./sound/parry.wav");
 	DamageAudioHandle_ = DmgAudio_->LoadWave("./sound/damage.wav");
@@ -192,13 +193,14 @@ void Player::Update() {
 			isBlinking_ = false;
 		}
 	}
+	
 
 	/*ImGui::Begin("Setmove");
 	ImGui::SliderFloat("Move X", &worldtransfrom_.translation_.x, -1.0f, 1.0f);
 	ImGui::SliderFloat("Move Y", &worldtransfrom_.translation_.y, -1.0f, 1.0f);
 	ImGui::End();*/
 
-	ImGui::Text("PlayerHP:%d", hp);
+	/*ImGui::Text("PlayerHP:%d", hp);*/
 	worldtransfrom_.UpdateMatrix();
 }
 

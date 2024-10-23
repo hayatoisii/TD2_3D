@@ -52,6 +52,8 @@ public:
 	void HpDraw();
 
 	WorldTransform worldtransfrom_;
+	// プレイヤーHP
+	int hp = 500;
 
 private:
 	Audio* PryAudio_ = nullptr;
@@ -68,8 +70,6 @@ private:
 	int DamageAudioHandle_ = 0;
 	int DamageAudio_ = -1;
 
-	// プレイヤーHP
-	int hp = 500;
 
 	// 弾
 	std::list<PlayerBullet*> bullets_;

@@ -356,7 +356,7 @@ void GameScene::CheckAllCollisions() {
 
 	Vector3 posA[4], posB[4];
 	float radiusA[3] = {0.8f, 5.0f, 0.8f};  // プレイヤーの半径（固定値）
-	float radiusB[3] = {0.15f, 5.0f, 0.8f}; // 敵弾の半径（固定値）
+	float radiusB[3] = {0.1f, 5.0f, 0.8f}; // 敵弾の半径（固定値）
 
 	// 敵弾リストの取得
 	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();

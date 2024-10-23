@@ -1,12 +1,11 @@
 #include "GameScene.h"
-#include "TextureManager.h"
 #include "Easing.h"
+#include "TextureManager.h"
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
-#include <cmath> // std::sin を使用
-#include <cassert>
 #include <algorithm>
-
+#include <cassert>
+#include <cmath> // std::sin を使用
 
 // 3秒wait
 
@@ -89,6 +88,7 @@ void GameScene::Initialize() {
 	preHandle2_ = TextureManager::Load("/pre/pre2.png");
 	preHandle3_ = TextureManager::Load("/pre/pre3.png");
 	preHandle4_ = TextureManager::Load("/pre/pre4.png");
+	preskipHandle_ = TextureManager::Load("/pre/preskip.png");
 
 	// スプライト生成
 	preSprite0 = Sprite::Create(preHandle0_, {0, 0});
@@ -96,6 +96,7 @@ void GameScene::Initialize() {
 	preSprite2 = Sprite::Create(preHandle2_, {0, 0});
 	preSprite3 = Sprite::Create(preHandle3_, {0, 0});
 	preSprite4 = Sprite::Create(preHandle4_, {0, 0});
+	preskipSprite = Sprite::Create(preskipHandle_, {0, 0});
 
 	// 敵キャラに自キャラのアドレスを渡す
 	enemy_->SetPlayer(player_);
@@ -120,13 +121,13 @@ void GameScene::Update() {
 	// スプライト
 	Vector2 AttackBarPos = AttackBarSprite_->GetPosition();
 
-	//チュートリアルスキップ
+	// チュートリアルスキップ
 	if (!isReturnPressed && input_->TriggerKey(DIK_RETURN)) { // リターンキーが押されて、かつまだ押されていない状態なら
 		Timer_ = 1600;
 		isReturnPressed = true; // 一度押されたらフラグを立てる
 	}
 
-	//プレイヤー回転
+	// プレイヤー回転
 	if (input_->TriggerKey(DIK_SPACE)) { // スペースキーが押されたら
 		start_time = clock();            // スペースキーを押した時の時間を記録
 		delayStarted = true;             // ディレイが開始されたことをフラグで管理
@@ -172,11 +173,11 @@ void GameScene::Update() {
 	ChangePhease();
 
 	// imGui
-	//ImGui::Begin("debug");
-	//ImGui::Text("IsDebugCamera: %d", isDebugCameraActive_); // シーン名を表示
-	//ImGui::Text("Timer: %d", Timer_); // シーン名を表示
+	// ImGui::Begin("debug");
+	// ImGui::Text("IsDebugCamera: %d", isDebugCameraActive_); // シーン名を表示
+	// ImGui::Text("Timer: %d", Timer_); // シーン名を表示
 	//// ImGui::Text("IsRotate: %f", skydomeRotate); // シーン名を表示
-	//ImGui::End();
+	// ImGui::End();
 }
 
 void GameScene::Draw() {
@@ -224,6 +225,7 @@ void GameScene::Draw() {
 #pragma region 前景スプライト描画
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
+	enemy_->hpDraw();
 
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
@@ -231,7 +233,7 @@ void GameScene::Draw() {
 	///
 	// if (input_->PushKey(DIK_C)) {
 	player_->HpDraw();
-	//命描画
+	// 命描画
 	if (Timer_ >= 0 && Timer_ <= 740) {
 		float progress = std::clamp(Timer_ / 60.0f, 0.0f, 1.0f);
 		float scale = Easing::EaseOutBack(progress);
@@ -241,8 +243,16 @@ void GameScene::Draw() {
 		preSprite0->SetSize(size);
 		preSprite0->Draw();
 	}
-
-	//pre1
+	if (Timer_ >= 100 && Timer_ <= 500) {
+		float progress = std::clamp((Timer_ - 100) / 30.0f, 0.0f, 1.0f);
+		float scale = Easing::easeOutCirc(progress);
+		Vector2 size = {scale * 1280.0f, scale * 720.0f};
+		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から拡大
+		preskipSprite->SetPosition(position);
+		preskipSprite->SetSize(size);
+		preskipSprite->Draw();
+	}
+	// pre1
 	if (Timer_ >= 0 && Timer_ <= 260) {
 		float progress = std::clamp(Timer_ / 60.0f, 0.0f, 1.0f);
 		float scale = Easing::EaseOutBack(progress);
@@ -250,10 +260,10 @@ void GameScene::Draw() {
 		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から拡大
 		preSprite1->SetPosition(position);
 		preSprite1->SetSize(size);
-	    preSprite1->Draw();
+		preSprite1->Draw();
 	}
 
-	//pre2
+	// pre2
 	if (Timer_ >= 260 && Timer_ <= 500) {
 		float progress = std::clamp((Timer_ - 240) / 60.0f, 0.0f, 1.0f);
 		float scale = Easing::EaseOutBack(progress);
@@ -264,7 +274,7 @@ void GameScene::Draw() {
 		preSprite2->Draw();
 	}
 
-	//pre3
+	// pre3
 	if (Timer_ >= 500 && Timer_ <= 740) {
 		float progress = std::clamp((Timer_ - 480) / 60.0f, 0.0f, 1.0f);
 		float scale = Easing::EaseOutBack(progress);
@@ -275,7 +285,7 @@ void GameScene::Draw() {
 		preSprite3->Draw();
 	}
 
-	//pre3アウト
+	// pre3アウト
 	if (Timer_ >= 740 && Timer_ <= 770) {
 		float progress = std::clamp((Timer_ - 740) / 30.0f, 0.0f, 1.0f);
 		float scale = Easing::EaseOutBack(1.0f - progress);
@@ -286,10 +296,10 @@ void GameScene::Draw() {
 		preSprite3->Draw();
 	}
 
-	//pre0アウト
+	// pre0アウト
 	if (Timer_ >= 740 && Timer_ <= 770) {
 		float progress = std::clamp((Timer_ - 740) / 30.0f, 0.0f, 1.0f); // 60フレームで描画アウト
-		float scale = Easing::EaseOutBack(1.0f - progress);               // 描画終了時にイージングアウト
+		float scale = Easing::EaseOutBack(1.0f - progress);              // 描画終了時にイージングアウト
 		Vector2 size = {scale * 1280.0f, scale * 720.0f};
 		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から縮小
 		preSprite0->SetPosition(position);
@@ -297,8 +307,7 @@ void GameScene::Draw() {
 		preSprite0->Draw();
 	}
 
-
-	//pre0描画
+	// pre0描画
 	if (Timer_ >= 1320 && Timer_ <= 1600) {
 		float progress = std::clamp((Timer_ - 1320) / 30.0f, 0.0f, 1.0f);
 		float scale = Easing::EaseOutBack(progress);
@@ -309,8 +318,7 @@ void GameScene::Draw() {
 		preSprite0->Draw();
 	}
 
-
-	//pre4
+	// pre4
 	if (Timer_ >= 1320 && Timer_ <= 1600) {
 		float progress = std::clamp((Timer_ - 1320) / 30.0f, 0.0f, 1.0f);
 		float scale = Easing::EaseOutBack(progress);
@@ -321,10 +329,10 @@ void GameScene::Draw() {
 		preSprite4->Draw();
 	}
 
-	//pre4アウト
+	// pre4アウト
 	if (Timer_ >= 1600 && Timer_ <= 1630) {
 		float progress = std::clamp((Timer_ - 1600) / 30.0f, 0.0f, 1.0f); // 60フレームで描画アウト
-		float scale = Easing::EaseOutBack(1.0f - progress);                       // 描画終了時にイージングアウト
+		float scale = Easing::EaseOutBack(1.0f - progress);               // 描画終了時にイージングアウト
 		Vector2 size = {scale * 1280.0f, scale * 720.0f};
 		Vector2 position = {640.0f - size.x / 2.0f, 360.0f - size.y / 2.0f}; // 中心から縮小
 		preSprite4->SetPosition(position);
@@ -332,7 +340,7 @@ void GameScene::Draw() {
 		preSprite4->Draw();
 	}
 
-	//pre0アウト
+	// pre0アウト
 	if (Timer_ >= 1600 && Timer_ <= 1630) {
 		float progress = std::clamp((Timer_ - 1600) / 30.0f, 0.0f, 1.0f); // 60フレームで描画アウト
 		float scale = Easing::EaseOutBack(1.0f - progress);               // 描画終了時にイージングアウト
@@ -341,10 +349,7 @@ void GameScene::Draw() {
 		preSprite0->SetPosition(position);
 		preSprite0->SetSize(size);
 		preSprite0->Draw();
-	
 	}
-
-
 
 	//}
 	// スプライト描画後処理
@@ -356,7 +361,7 @@ void GameScene::Draw() {
 void GameScene::CheckAllCollisions() {
 
 	Vector3 posA[4], posB[4];
-	float radiusA[3] = {0.8f, 5.0f, 0.8f};  // プレイヤーの半径（固定値）
+	float radiusA[3] = {0.8f, 5.0f, 0.8f}; // プレイヤーの半径（固定値）
 	float radiusB[3] = {0.1f, 5.0f, 0.8f}; // 敵弾の半径（固定値）
 
 	// 敵弾リストの取得
@@ -375,9 +380,7 @@ void GameScene::CheckAllCollisions() {
 		posB[0] = bullet->GetWorldPosition();
 
 		// 2つの球の中心間の距離の二乗を計算
-		float distanceSquared = (posA[0].x - posB[0].x) * (posA[0].x - posB[0].x) + 
-			(posA[0].y - posB[0].y) * (posA[0].y - posB[0].y) + 
-			(posA[0].z - posB[0].z) * (posA[0].z - posB[0].z);
+		float distanceSquared = (posA[0].x - posB[0].x) * (posA[0].x - posB[0].x) + (posA[0].y - posB[0].y) * (posA[0].y - posB[0].y) + (posA[0].z - posB[0].z) * (posA[0].z - posB[0].z);
 
 		// 半径の合計の二乗
 		float combinedRadiusSquared = (radiusA[0] + radiusB[0]) * (radiusA[0] + radiusB[0]);

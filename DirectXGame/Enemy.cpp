@@ -29,6 +29,38 @@ void Enemy::Initialize(Model* model, ViewProjection* camera, const Vector3& pos)
 	deathParticles_->Initialize(initialPosition_, deathParticlesModel_, camera);
 	velocity_ = {0, -kWalkSpeed, 0};
 	walkTimer = 0.0f;
+
+	// テクスチャロード
+	HpHandle1_ = TextureManager::Load("/enemyHp/10HUD.png");
+	HpHandle2_ = TextureManager::Load("/enemyHp/9HUD.png");
+	HpHandle3_ = TextureManager::Load("/enemyHp/8HUD.png");
+	HpHandle4_ = TextureManager::Load("/enemyHp/7HUD.png");
+	HpHandle5_ = TextureManager::Load("/enemyHp/6HUD.png");
+	HpHandle6_ = TextureManager::Load("/enemyHp/5HUD.png");
+	HpHandle7_ = TextureManager::Load("/enemyHp/4HUD.png");
+	HpHandle8_ = TextureManager::Load("/enemyHp/3HUD.png");
+	HpHandle9_ = TextureManager::Load("/enemyHp/2HUD.png");
+	HpHandle10_ = TextureManager::Load("/enemyHp/1HUD.png");
+
+
+	 
+	
+	                    
+	HpHandles[0] = HpHandle1_;
+	HpHandles[1] = HpHandle2_;
+	HpHandles[2] = HpHandle3_;
+	HpHandles[3] = HpHandle4_;
+	HpHandles[4] = HpHandle5_;
+	HpHandles[5] = HpHandle6_;
+	HpHandles[6] = HpHandle7_;
+	HpHandles[7] = HpHandle8_;
+	HpHandles[8] = HpHandle9_;
+	HpHandles[9] = HpHandle10_;
+
+	// 配列を使ってスプライトを生成
+	for (int i = 0; i < 10; ++i) {
+		HpSprites[i] = Sprite::Create(HpHandles[i], {0, 0});
+	}
 }
 
 Vector3 Enemy::GetWorldPosition() {
@@ -57,6 +89,8 @@ void Enemy::OnCollision() {
 		clearStartTime_ = clock();    // 敵が倒された瞬間の時間を記録
 	}
 }
+
+
 
 void EnemyBullet::SetTarget(Player* target) {
 	player_ = target; // プレイヤーをターゲットとして設定
@@ -387,8 +421,9 @@ bool Enemy::ShouldTransitionPhase() const {
 
 void Enemy::Draw() {
 	// コマンドリストの取得
-
+	
 	if (!isClear_) {
+		
 		// 点滅中はフレームごとに描画するかどうかを切り替える
 		if (!isBlinking_ || (blinkTimer_ / 5) % 2 == 0) {
 			model_->Draw(worldtransfrom_, *camera_);
@@ -408,5 +443,13 @@ void Enemy::Draw() {
 			
 			break; // HPが0なので処理を打ち切る
 		}
+	}
+
+}
+void Enemy::hpDraw() {
+	// 敵のHPが0のときも描画されるように計算式を調整
+	int index = (2000 - enemyhp) / 200; // HPが減少していく方向でインデックスを計算
+	if (index >= 0 && index < 10 && HpSprites[index] != nullptr) {
+		HpSprites[index]->Draw();
 	}
 }

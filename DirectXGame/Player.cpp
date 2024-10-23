@@ -215,7 +215,7 @@ void Player::Update2() {
 	worldtransfrom_.translation_.x = radius * cos(angle); // X座標を更新
 	worldtransfrom_.translation_.y = radius * sin(angle); // Y座標は固定
 	worldtransfrom_.translation_.z = radius * sin(angle); // Z座標を更新
-	worldtransfrom_.rotation_.y += 0.02f;
+	worldtransfrom_.rotation_.y += 0.03f;
 	worldtransfrom_.rotation_.x += 0.02f;
 
 	angle += speed;

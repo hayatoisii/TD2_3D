@@ -46,6 +46,8 @@ public:
 	// 衝突を検知したら呼び出されるコールバック関数
 	void OnCollision();
 
+	void hpDraw();
+
 	// 発射間隔
 	static const int kFireInterval = 250;
 	static const int kFireInterval2 = 200;
@@ -111,4 +113,29 @@ private:
 	static inline const float kWalkMotionTime = 1.0f;
 	Vector3 velocity_ = {};
 	float walkTimer = 0.0f;
+
+	// プレイヤーHP
+	Sprite* HpSprite1_ = nullptr;
+	Sprite* HpSprite2_ = nullptr;
+	Sprite* HpSprite3_ = nullptr;
+	Sprite* HpSprite4_ = nullptr;
+	Sprite* HpSprite5_ = nullptr;
+	Sprite* HpSprite6_ = nullptr;
+	Sprite* HpSprite7_ = nullptr;
+	Sprite* HpSprite8_ = nullptr;
+	Sprite* HpSprite9_ = nullptr;
+	Sprite* HpSprite10_ = nullptr;
+	uint32_t HpHandle1_ = 0;
+	uint32_t HpHandle2_ = 0;
+	uint32_t HpHandle3_ = 0;
+	uint32_t HpHandle4_ = 0;
+	uint32_t HpHandle5_ = 0;
+	uint32_t HpHandle6_ = 0;
+	uint32_t HpHandle7_ = 0;
+	uint32_t HpHandle8_ = 0;
+	uint32_t HpHandle9_ = 0;
+	uint32_t HpHandle10_ = 0;
+
+	Sprite* HpSprites[10]; // HpSprite1_〜HpSprite10_ を配列で管理
+	int HpHandles[10];     // HpHandle1_〜HpHandle10_ も配列で管理
 };

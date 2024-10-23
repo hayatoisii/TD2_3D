@@ -54,7 +54,10 @@ public: // メンバ関数
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
-	Audio* audio_ = nullptr;
+	Audio* clrAudio_ = nullptr;
+
+	int ClearAudioHandle_ = 0;
+	int ClearAudio_ = 0;
 
 	Skydome* skydome_ = nullptr;
 
@@ -74,6 +77,7 @@ private: // メンバ変数
 
 	// 終了フラグ
 	bool finished_ = false;
+	bool isBGMPlaying_ = false;
 
 	/// <summary>
 	/// ゲームシーン用

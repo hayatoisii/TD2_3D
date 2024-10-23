@@ -21,7 +21,7 @@ void TitleScene::Initialize() {
 
 	// SkyDome
 	skydome_ = new Skydome();
-	modelSkydome_ = Model::CreateFromOBJ("skydomeTitle", true);
+	modelSkydome_ = Model::CreateFromOBJ("space", true);
 	skydome_->Initialize(modelSkydome_, &viewProjection_);
 	// タイトルを調整
 	worldTransform_.translation_ = {4.0f, 0.0f, 0.0f};

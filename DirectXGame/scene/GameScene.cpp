@@ -419,7 +419,7 @@ void GameScene::CheckAllCollisions() {
 		if (distanceSquared <= combinedRadiusSquared) {
 			enemy_->OnCollision();
 			bullet->OnCollision();
-			atkAudio_->playAudio(attackAudio_, AttackAudioHandle_, false, 1.0f);
+			atkAudio_->playAudio(attackAudio_, AttackAudioHandle_, false, 0.6f);
 		}
 	}
 

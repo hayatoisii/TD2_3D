@@ -115,20 +115,18 @@ AABB Player::GetAABB() {
 
 void Player::Update2() {
 
-	// 回転角度（時間経過に応じて増加）
 	static float angle = 0.0f;
 	const float radius = 10.0f; // プレイヤーの回転半径
 	const float speed = 0.01f;  // 回転速度
 
-	// Z軸を中心に円を描くようにプレイヤー位置を更新
 	worldtransfrom_.translation_.x = radius * cos(angle); // X座標を更新
 	worldtransfrom_.translation_.y = radius * sin(angle); // Y座標は固定
 	worldtransfrom_.translation_.z = radius * sin(angle); // Z座標を更新
-	worldtransfrom_.rotation_.y += 0.02f;
+	worldtransfrom_.rotation_.y += 0.03f;
 	worldtransfrom_.rotation_.x += 0.02f;
 
 	angle += speed;
-	if (angle >= 2 * static_cast<float>(M_PI)) { // M_PIをfloatにキャスト
+	if (angle >= 2 * static_cast<float>(M_PI)) {
 		angle -= 2 * static_cast<float>(M_PI);
 	}
 
@@ -140,7 +138,6 @@ void Player::Update3() {
 	worldtransfrom_.UpdateMatrix();
 
 }
-
 
 void Player::Update() {
 
@@ -165,8 +162,6 @@ void Player::Update() {
 
 	// キャラクターの移動速さ
 	const float kCharacterSpeed = 0.05f;
-	// 回転速さ[ラジアン/frame]
-	/*const float kRotSpeed = 0.5f;*/
 
 	// 押した方向で移動ベクトルを変更(左右)
 	if (Input::GetInstance()->PushKey(DIK_A)) {

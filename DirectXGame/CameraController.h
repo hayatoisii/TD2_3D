@@ -26,7 +26,7 @@ public:
 	void Reset();
 
 	void SetMovableArea(const Rect& area) { movableArea_ = area; }
-	void SetMargin(const Rect& margin) { margin_ = margin; } // マージン設定メソッドを追加
+	void SetMargin(const Rect& margin) { margin_ = margin; }
 	void setTarget(Player* target) { target_ = target; }
 	const ViewProjection& GetViewProjection() const { return viewProjection_; }
 

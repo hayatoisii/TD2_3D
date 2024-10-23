@@ -6,12 +6,13 @@ GameOverScene::GameOverScene() {}
 
 GameOverScene::~GameOverScene() { 
 
-	delete player_; 
+    delete player_;
+	delete secondPlayer_;
 	delete modelPlayer_;
 	delete modelGameover_;
 	delete modelSkydome_;
-	delete secondPlayer_;
 	delete skydome_;
+	delete cameraController_;
 }
 
 void GameOverScene::Initialize() {

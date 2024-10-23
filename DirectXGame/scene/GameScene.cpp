@@ -19,6 +19,13 @@ GameScene::~GameScene() {
 	delete modelGround_;
 	delete modelGround2_;
 	delete AttackSprite_;
+	delete player_;
+	delete enemy_;
+	delete skydome_;
+	delete ground_;
+	delete ground2_;
+	delete debugCamera_;
+	delete cameraController_;
 }
 
 void GameScene::Initialize() {

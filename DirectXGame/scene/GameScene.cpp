@@ -230,6 +230,8 @@ void GameScene::Draw() {
 	/// </summary>
 	///
 	// if (input_->PushKey(DIK_C)) {
+
+	player_->HpDraw();
 	
 	//命描画
 	if (Timer_ >= 0 && Timer_ <= 740) {
@@ -343,7 +345,8 @@ void GameScene::Draw() {
 		preSprite0->Draw();
 	}
 
-
+	player_->HpDraw();
+	enemy_->HpDraw();
 
 	//}
 	// スプライト描画後処理

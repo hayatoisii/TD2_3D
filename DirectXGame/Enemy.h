@@ -26,6 +26,7 @@ public:
 	void Update();
 	bool ShouldTransitionPhase() const;
 	void Draw();
+	void HpDraw();
 	~Enemy();
 	void Fire();
 	void preFire();
@@ -92,5 +93,6 @@ private:
 
 	int FireTimer_ = 0;
 	
-	
+	Sprite* HpSprite_ = nullptr;
+	uint32_t HpHandle_ = 0;
 };

@@ -27,6 +27,20 @@ void Player::Initialize(Model* model, ViewProjection* camera, const Vector3& pos
 	
 	ParryAudioHandle_ = PryAudio_->LoadWave("./sound/parry.wav");
 	DamageAudioHandle_ = DmgAudio_->LoadWave("./sound/damage.wav");
+
+	// テクスチャロード
+	HpHandle1_ = TextureManager::Load("/PlayerHp/1HUD.png");
+	HpHandle2_ = TextureManager::Load("/PlayerHp/2HUD.png");
+	HpHandle3_ = TextureManager::Load("/PlayerHp/3HUD.png");
+	HpHandle4_ = TextureManager::Load("/PlayerHp/4HUD.png");
+	HpHandle5_ = TextureManager::Load("/PlayerHp/5HUD.png");
+
+	// スプライト生成
+	HpSprite1_ = Sprite::Create(HpHandle1_, { 0, 0 });
+	HpSprite2_ = Sprite::Create(HpHandle2_, { 0, 0 });
+	HpSprite3_ = Sprite::Create(HpHandle3_, { 0, 0 });
+	HpSprite4_ = Sprite::Create(HpHandle4_, { 0, 0 });
+	HpSprite5_ = Sprite::Create(HpHandle5_, { 0, 0 });
 }
 
 void Player::OnCollision() {
@@ -226,5 +240,25 @@ void Player::Draw() {
 	// 弾描画
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(*camera_);
+	}
+}
+
+void Player::HpDraw() {
+
+	// HP描画
+	if (hp == 500) {
+		HpSprite5_->Draw();
+	}
+	if (hp == 400) {
+		HpSprite4_->Draw();
+	}
+	if (hp == 300) {
+		HpSprite3_->Draw();
+	}
+	if (hp == 200) {
+		HpSprite2_->Draw();
+	}
+	if (hp == 100) {
+		HpSprite1_->Draw();
 	}
 }

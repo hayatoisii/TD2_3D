@@ -22,6 +22,12 @@ void Enemy::Initialize(Model* model, ViewProjection* camera, const Vector3& pos)
 	worldtransfrom_.translation_ = pos;
 	worldtransfrom_.Initialize();
 	input_ = Input::GetInstance();
+
+	// テクスチャロード
+	HpHandle_ = TextureManager::Load("/EnemyHp/EnemyHUD.png");
+
+	// スプライト生成
+	HpSprite_ = Sprite::Create(HpHandle_, { 0, 0 });
 }
 
 Vector3 Enemy::GetWorldPosition() {
@@ -376,5 +382,11 @@ void Enemy::Draw() {
 
 	for (EnemyBullet* bullet : bullets_) {
 		bullet->Draw(*camera_);
+	}
+}
+
+void Enemy::HpDraw() {
+	if (hp > 0) {
+		HpSprite_->Draw();
 	}
 }

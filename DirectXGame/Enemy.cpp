@@ -4,6 +4,7 @@
 
 #include <cstdlib> // rand() 関数を使うために必要
 #include <ctime>   // time() 関数を使うために必要
+#include <numbers>
 
 Enemy::~Enemy() {
 
@@ -354,6 +355,21 @@ void Enemy::Update() {
 	ImGui::Text("EnemyHP:%d", enemyhp);
 	/*ImGui::Text("FireTimer:%d", FireTimer_);*/
 }
+
+void Enemy::DeathEnemyUpdate() {
+
+	worldtransfrom_.translation_.y += velocity_.y;
+	walkTimer += 1.0f / 60.0f;
+
+	float parm = std::sin(std::numbers::pi_v<float> * 2.0f * walkTimer / kWalkMotionTime);
+	float radian = kWalkMotionAngleStart + kWalkMontionAngleEnd * (parm + 1.0f) / 2.0f;
+	worldtransfrom_.rotation_.z = radian;
+
+	worldtransfrom_.UpdateMatrix();
+}
+
+void Enemy::fallingUpdate() { worldtransfrom_.UpdateMatrix(); }
+
 
 bool Enemy::ShouldTransitionPhase() const {
 	if (isDead_ && (clock() >= clearStartTime_ + 2200)) {

@@ -24,6 +24,8 @@ public:
 	
 	void Initialize(Model* model, ViewProjection* camera, const Vector3& pos);
 	void Update();
+	void DeathEnemyUpdate();
+	void fallingUpdate();
 	bool ShouldTransitionPhase() const;
 	void Draw();
 	~Enemy();
@@ -53,8 +55,11 @@ public:
 	bool IsClear() const { return isDead_; }
 
 	bool EnemyDead = false;
-private:
+
 	WorldTransform worldtransfrom_;
+
+private:
+
 	Model* model_ = nullptr;
 	ViewProjection* camera_ = nullptr;
 	Input* input_ = nullptr;
@@ -97,5 +102,12 @@ private:
 
 	Sprite* HpSprite_ = nullptr;
 	uint32_t HpHandle_ = 0;
+
+	static inline const float kWalkSpeed = 0.05f;
+	static inline const float kWalkMotionAngleStart = 0.2f;
+	static inline const float kWalkMontionAngleEnd = -0.6f;
+	static inline const float kWalkMotionTime = 1.0f;
+	Vector3 velocity_ = {};
+	float walkTimer = 0.0f;
 	
 };

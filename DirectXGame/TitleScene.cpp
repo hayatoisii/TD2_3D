@@ -1,6 +1,6 @@
 #include "TitleScene.h"
 #include "TextureManager.h"
-#include "imgui.h"
+
 
 #include <Input.h>
 #include <cmath> // sin関数を使用するために必要
@@ -21,7 +21,7 @@ void TitleScene::Initialize() {
 
 	// SkyDome
 	skydome_ = new Skydome();
-	modelSkydome_ = Model::CreateFromOBJ("skydomeTitle", true);
+	modelSkydome_ = Model::CreateFromOBJ("space", true);
 	skydome_->Initialize(modelSkydome_, &viewProjection_);
 	// タイトルを調整
 	worldTransform_.translation_ = {4.0f, 0.0f, 0.0f};

@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "Enemy.h"
-#include "imgui.h"
+
 #include <algorithm>
 #include <cassert>
 
@@ -24,6 +24,7 @@ void Player::Initialize(Model* model, ViewProjection* camera, const Vector3& pos
 	input_ = Input::GetInstance();
 	PryAudio_ = Audio::GetInstance();
 	DmgAudio_ = Audio::GetInstance();
+	
 
 	ParryAudioHandle_ = PryAudio_->LoadWave("./sound/parry.wav");
 	DamageAudioHandle_ = DmgAudio_->LoadWave("./sound/damage.wav");
@@ -192,13 +193,14 @@ void Player::Update() {
 			isBlinking_ = false;
 		}
 	}
+	
 
 	/*ImGui::Begin("Setmove");
 	ImGui::SliderFloat("Move X", &worldtransfrom_.translation_.x, -1.0f, 1.0f);
 	ImGui::SliderFloat("Move Y", &worldtransfrom_.translation_.y, -1.0f, 1.0f);
 	ImGui::End();*/
 
-	ImGui::Text("PlayerHP:%d", hp);
+	/*ImGui::Text("PlayerHP:%d", hp);*/
 	worldtransfrom_.UpdateMatrix();
 }
 
@@ -214,7 +216,7 @@ void Player::Update2() {
 	worldtransfrom_.translation_.y = radius * sin(angle); // Y座標は固定
 	worldtransfrom_.translation_.z = radius * sin(angle); // Z座標を更新
 	worldtransfrom_.rotation_.y += 0.03f;
-	worldtransfrom_.rotation_.x += 0.03f;
+	worldtransfrom_.rotation_.x += 0.02f;
 
 	angle += speed;
 	if (angle >= 2 * static_cast<float>(3.14f)) { // M_PIをfloatにキャスト
@@ -225,6 +227,7 @@ void Player::Update2() {
 }
 
 void Player::Update3() { worldtransfrom_.UpdateMatrix(); }
+
 
 void Player::ClearUpdate() {
 
@@ -247,6 +250,7 @@ void Player::ClearUpdate() {
 
 	worldtransfrom_.UpdateMatrix();
 }
+
 
 void Player::HpDraw() {
 	// HP描画

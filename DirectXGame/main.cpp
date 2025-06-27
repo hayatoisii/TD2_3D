@@ -222,9 +222,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		UpdateScene();
 
 		// imGui
-		ImGui::Begin("Scene");
-		ImGui::Text("Scene: %s", GetSceneName(scene)); // シーン名を表示
-		ImGui::End();
+		//ImGui::Begin("Scene");
+		//ImGui::Text("Scene: %s", GetSceneName(scene)); // シーン名を表示
+		//ImGui::End();
 		// 軸表示の更新
 		axisIndicator->Update();
 		// ImGui受付終了

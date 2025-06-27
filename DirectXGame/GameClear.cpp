@@ -25,7 +25,8 @@ void GameClearScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
-	audio_ = Audio::GetInstance();
+	clrAudio_=Audio::GetInstance();
+	ClearAudioHandle_ = clrAudio_->LoadWave("./sound/clear.wav");
 
 	player_ = new Player();
 	secondPlayer_ = new Player();
@@ -44,6 +45,8 @@ void GameClearScene::Initialize() {
 	modelEnemy_ = Model::CreateFromOBJ("enemydeath");
 	modelbatu_ = Model::CreateFromOBJ("enemybatu");
 	modelfalling_ = Model::CreateFromOBJ("falling");
+
+	
 
 	viewProjection_.Initialize();
 	skydome_->Initialize(modelSkydome_, &viewProjection_);
@@ -72,6 +75,11 @@ void GameClearScene::Initialize() {
 void GameClearScene::Update() {
 	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
 		finished_ = true;
+	}
+
+	if (!isBGMPlaying_) {
+		clrAudio_->playAudio(ClearAudio_, ClearAudioHandle_, false, 0.7f);
+		isBGMPlaying_ = true;
 	}
 
 	player_->ClearUpdate();

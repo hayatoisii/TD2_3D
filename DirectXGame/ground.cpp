@@ -1,5 +1,5 @@
 #include "Ground.h"
-#include "imgui.h"
+
 
 void Ground::Initialize(Model* model, ViewProjection* viewProjection) {
 	worldTransform_.Initialize();
@@ -21,11 +21,11 @@ void Ground::Update() {
 		worldTransform_.translation_.z = worldTransform_.translation_.z + 226.0f; // Ground2 の終わりと連携して位置を調整
 	}
 
-	ImGui::Begin("debug");
+	/*ImGui::Begin("debug");
 	ImGui::Text("GroundPosY: %f", worldTransform_.translation_.y);
 	ImGui::Text("GroundPosX: %f", worldTransform_.translation_.x);
 	ImGui::Text("GroundPosZ: %f", worldTransform_.translation_.z);
-	ImGui::End();
+	ImGui::End();*/
 
 	worldTransform_.UpdateMatrix();
 }

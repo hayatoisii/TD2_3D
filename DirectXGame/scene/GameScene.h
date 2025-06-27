@@ -157,12 +157,14 @@ private: // メンバ変数
 	Sprite* preSprite2 = nullptr;
 	Sprite* preSprite3 = nullptr;
 	Sprite* preSprite4 = nullptr;
+	Sprite* preskipSprite = nullptr;
 
 	uint32_t preHandle0_ = 0;
 	uint32_t preHandle1_ = 0;
 	uint32_t preHandle2_ = 0;
 	uint32_t preHandle3_ = 0;
 	uint32_t preHandle4_ = 0;
+	uint32_t preskipHandle_ = 0;
 
 
 

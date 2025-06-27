@@ -1,6 +1,6 @@
 #include "Enemy.h"
 #include "Player.h"
-#include "imgui.h"
+
 
 #include <cstdlib> // rand() 関数を使うために必要
 #include <ctime>   // time() 関数を使うために必要
@@ -23,8 +23,45 @@ void Enemy::Initialize(Model* model, ViewProjection* camera, const Vector3& pos)
 	worldtransfrom_.translation_ = pos;
 	worldtransfrom_.Initialize();
 	input_ = Input::GetInstance();
+
+	// DeathParticles
+	deathParticles_ = new DeathParticles;
+	deathParticlesModel_ = Model::CreateFromOBJ("deathParticle", true); // 3Dモデルの生成
+	deathParticles_->Initialize(initialPosition_, deathParticlesModel_, camera);
 	velocity_ = {0, -kWalkSpeed, 0};
 	walkTimer = 0.0f;
+
+	// テクスチャロード
+	HpHandle1_ = TextureManager::Load("/enemyHp/10HUD.png");
+	HpHandle2_ = TextureManager::Load("/enemyHp/9HUD.png");
+	HpHandle3_ = TextureManager::Load("/enemyHp/8HUD.png");
+	HpHandle4_ = TextureManager::Load("/enemyHp/7HUD.png");
+	HpHandle5_ = TextureManager::Load("/enemyHp/6HUD.png");
+	HpHandle6_ = TextureManager::Load("/enemyHp/5HUD.png");
+	HpHandle7_ = TextureManager::Load("/enemyHp/4HUD.png");
+	HpHandle8_ = TextureManager::Load("/enemyHp/3HUD.png");
+	HpHandle9_ = TextureManager::Load("/enemyHp/2HUD.png");
+	HpHandle10_ = TextureManager::Load("/enemyHp/1HUD.png");
+
+
+	 
+	
+	                    
+	HpHandles[0] = HpHandle1_;
+	HpHandles[1] = HpHandle2_;
+	HpHandles[2] = HpHandle3_;
+	HpHandles[3] = HpHandle4_;
+	HpHandles[4] = HpHandle5_;
+	HpHandles[5] = HpHandle6_;
+	HpHandles[6] = HpHandle7_;
+	HpHandles[7] = HpHandle8_;
+	HpHandles[8] = HpHandle9_;
+	HpHandles[9] = HpHandle10_;
+
+	// 配列を使ってスプライトを生成
+	for (int i = 0; i < 10; ++i) {
+		HpSprites[i] = Sprite::Create(HpHandles[i], {0, 0});
+	}
 }
 
 Vector3 Enemy::GetWorldPosition() {
@@ -53,6 +90,8 @@ void Enemy::OnCollision() {
 		clearStartTime_ = clock();    // 敵が倒された瞬間の時間を記録
 	}
 }
+
+
 
 void EnemyBullet::SetTarget(Player* target) {
 	player_ = target; // プレイヤーをターゲットとして設定
@@ -325,6 +364,7 @@ void Enemy::Update() {
 	// 点滅の更新
 	if (isBlinking_) {
 		blinkTimer_--;
+		deathParticles_->Update();
 		if (blinkTimer_ <= 0) {
 			isBlinking_ = false;
 			isClear_ = true; // 点滅が終了したら敵をクリア状態にする
@@ -354,7 +394,7 @@ void Enemy::Update() {
 
 	worldtransfrom_.UpdateMatrix();
 
-	ImGui::Text("EnemyHP:%d", enemyhp);
+	//ImGui::Text("EnemyHP:%d", enemyhp);
 	/*ImGui::Text("FireTimer:%d", FireTimer_);*/
 }
 
@@ -370,11 +410,8 @@ void Enemy::DeathEnemyUpdate() {
 	worldtransfrom_.UpdateMatrix();
 }
 
-void Enemy::fallingUpdate() { worldtransfrom_.UpdateMatrix(); }
-
-
 bool Enemy::ShouldTransitionPhase() const {
-	if (isDead_ && (clock() >= clearStartTime_ + 2200)) {
+	if (isDead_ && (clock() >= clearStartTime_ + 1000)) {
 		// 点滅終了後、2秒経過した場合にシーン遷移を許可
 		return true;
 	}
@@ -383,12 +420,16 @@ bool Enemy::ShouldTransitionPhase() const {
 
 void Enemy::Draw() {
 	// コマンドリストの取得
-
+	
 	if (!isClear_) {
+		
 		// 点滅中はフレームごとに描画するかどうかを切り替える
 		if (!isBlinking_ || (blinkTimer_ / 5) % 2 == 0) {
 			model_->Draw(worldtransfrom_, *camera_);
 		}
+	}
+	if (enemyhp == 0) {
+		deathParticles_->Draw();
 	}
 
 	for (EnemyBullet* bullet : bullets_) {
@@ -398,7 +439,16 @@ void Enemy::Draw() {
 		} else {
 			bullet->Deactivate();
 			
+			
 			break; // HPが0なので処理を打ち切る
 		}
+	}
+
+}
+void Enemy::hpDraw() {
+	// 敵のHPが0のときも描画されるように計算式を調整
+	int index = (2000 - enemyhp) / 200; // HPが減少していく方向でインデックスを計算
+	if (index >= 0 && index < 10 && HpSprites[index] != nullptr) {
+		HpSprites[index]->Draw();
 	}
 }

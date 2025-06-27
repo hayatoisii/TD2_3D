@@ -107,25 +107,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="2d\ImGuiManager.cpp" />
-    <ClCompile Include="3d\WorldTransform.cpp" />
-    <ClCompile Include="AABB.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
-    <ClCompile Include="CameraController.cpp" />
-    <ClCompile Include="DeathParticles.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="EnemyBullet.cpp" />
-    <ClCompile Include="GameClear.cpp" />
-    <ClCompile Include="GameOverScene.cpp" />
-    <ClCompile Include="Ground.cpp" />
-    <ClCompile Include="Ground2.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MyMath.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerBullet.cpp" />
-    <ClCompile Include="scene\GameScene.cpp" />
-    <ClCompile Include="SkyDome.cpp" />
-    <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\ImGuiManager.h" />

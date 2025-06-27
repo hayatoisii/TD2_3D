@@ -75,22 +75,6 @@ private: // メンバ変数
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
 
-	Skydome* skydome_ = nullptr;
-
-	Vector3 playerPos = {};
-	Vector3 earthPos = {};
-	Vector3 enemyPos = {};
-	Model* modelPlayer_ = nullptr;
-	Model* modelSkydome_ = nullptr;
-	Model* modelClear_ = nullptr;
-	Model* modelearth_ = nullptr;
-	Model* modelEnemy_ = nullptr;
-	Model* modelbatu_ = nullptr;
-	Model* modelfalling_ = nullptr;
-
-	WorldTransform worldTransform_;
-	ViewProjection viewProjection_;
-
 	// 終了フラグ
 	bool finished_ = false;
 	bool isBGMPlaying_ = false;
